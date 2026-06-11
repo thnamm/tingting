@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>HOSE Scraper Dashboard 🇻🇳</title>
+  <meta name="description" content="Bảng điều khiển theo dõi chứng khoán sàn HOSE theo thời gian thực"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css"/>
+</head>
+<body>
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">📈</span>
+        <div>
+          <div class="logo-title">HOSE Bot</div>
+          <div class="logo-sub">Stock Dashboard</div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item active" href="#" data-page="dashboard" id="nav-dashboard">
+        <span class="nav-icon">🏠</span>
+        <span>Tổng quan</span>
+      </a>
+      <a class="nav-item" href="#" data-page="stocks" id="nav-stocks">
+        <span class="nav-icon">📊</span>
+        <span>Bảng giá</span>
+      </a>
+      <a class="nav-item" href="#" data-page="chart" id="nav-chart">
+        <span class="nav-icon">📉</span>
+        <span>Biểu đồ</span>
+      </a>
+      <a class="nav-item" href="#" data-page="telegram" id="nav-telegram">
+        <span class="nav-icon">✈️</span>
+        <span>Telegram</span>
+      </a>
+      <a class="nav-item" href="#" data-page="logs" id="nav-logs">
+        <span class="nav-icon">🖥</span>
+        <span>Log</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">Đang kết nối...</span>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="btn-icon" id="sidebar-toggle">☰</button>
+        <h1 class="page-title" id="page-title">Tổng quan</h1>
+      </div>
+      <div class="topbar-right">
+        <span class="last-updated" id="last-updated">Chưa cập nhật</span>
+        <button class="btn btn-primary" id="btn-refresh" onclick="fetchData()">
+          <span id="refresh-icon">🔄</span> Cập nhật
+        </button>
+      </div>
+    </header>
+
+    <!-- ══════════════ PAGE: DASHBOARD ══════════════ -->
+    <section class="page active" id="page-dashboard">
+      <!-- Stats cards -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Tổng mã</div>
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-sub">đang theo dõi</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">🟢 Tăng</div>
+          <div class="stat-value" id="stat-up">—</div>
+          <div class="stat-sub">mã tăng giá</div>
+        </div>
+        <div class="stat-card red">
+          <div class="stat-label">🔴 Giảm</div>
+          <div class="stat-value" id="stat-down">—</div>
+          <div class="stat-sub">mã giảm giá</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-label">⬜ Không đổi</div>
+          <div class="stat-value" id="stat-flat">—</div>
+          <div class="stat-sub">đứng giá</div>
+        </div>
+      </div>
+
+      <!-- Top movers -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <span>🟢 Top tăng mạnh</span>
+          </div>
+          <div class="card-body" id="top-up-list">
+            <div class="placeholder">Chưa có dữ liệu</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span>🔴 Top giảm mạnh</span>
+          </div>
+          <div class="card-body" id="top-down-list">
+            <div class="placeholder">Chưa có dữ liệu</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Watchlist mini -->
+      <div class="card">
+        <div class="card-header">
+          <span>⭐ Watchlist của bạn</span>
+        </div>
+        <div class="card-body">
+          <div class="watchlist-grid" id="watchlist-cards">
+            <div class="placeholder">Chưa có dữ liệu</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PAGE: STOCKS ══════════════ -->
+    <section class="page" id="page-stocks">
+      <div class="card full-card">
+        <div class="card-header">
+          <span>📊 Bảng giá toàn bộ</span>
+          <input class="search-input" id="search-input" placeholder="🔍 Tìm mã cổ phiếu..." oninput="filterTable(this.value)"/>
+        </div>
+        <div class="table-wrap">
+          <table class="stock-table" id="stock-table">
+            <thead>
+              <tr>
+                <th onclick="sortTable('ticker')">Mã ↕</th>
+                <th onclick="sortTable('price')">Giá ↕</th>
+                <th onclick="sortTable('change')">Thay đổi ↕</th>
+                <th onclick="sortTable('pct_change')">% ↕</th>
+                <th onclick="sortTable('open')">Mở cửa</th>
+                <th onclick="sortTable('high')">Cao</th>
+                <th onclick="sortTable('low')">Thấp</th>
+                <th onclick="sortTable('volume')">KL ↕</th>
+                <th>Ngày</th>
+                <th>Biểu đồ</th>
+              </tr>
+            </thead>
+            <tbody id="stock-tbody">
+              <tr><td colspan="10" class="placeholder">Nhấn "Cập nhật" để lấy dữ liệu</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PAGE: CHART ══════════════ -->
+    <section class="page" id="page-chart">
+      <div class="card full-card">
+        <div class="card-header chart-header">
+          <span>📉 Biểu đồ lịch sử giá</span>
+          <div class="chart-controls">
+            <select id="chart-ticker" onchange="loadChart()">
+              <option value="">-- Chọn mã --</option>
+            </select>
+            <select id="chart-range" onchange="loadChart()">
+              <option value="30">30 ngày</option>
+              <option value="90" selected>90 ngày</option>
+              <option value="180">6 tháng</option>
+              <option value="365">1 năm</option>
+            </select>
+            <button class="btn btn-primary" onclick="loadChart()">Xem</button>
+          </div>
+        </div>
+        <div class="card-body chart-body">
+          <canvas id="price-chart"></canvas>
+          <div class="chart-empty" id="chart-empty">Chọn mã cổ phiếu để xem biểu đồ</div>
+        </div>
+      </div>
+
+      <!-- Company overview card -->
+      <div class="card" id="overview-card" style="display:none">
+        <div class="card-header"><span>🏢 Thông tin doanh nghiệp</span></div>
+        <div class="card-body" id="overview-body"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PAGE: TELEGRAM ══════════════ -->
+    <section class="page" id="page-telegram">
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header"><span>✈️ Gửi báo cáo Telegram</span></div>
+          <div class="card-body tg-body">
+            <p class="tg-info">Gửi báo cáo thị trường hiện tại về Telegram bot của bạn.</p>
+            <div class="tg-status" id="tg-config-status">Đang kiểm tra cấu hình...</div>
+            <button class="btn btn-primary btn-full" id="btn-tg-send" onclick="sendTelegram()">
+              ✈️ Gửi báo cáo ngay
+            </button>
+            <div class="tg-result" id="tg-result"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span>⏰ Tự động gửi định kỳ</span></div>
+          <div class="card-body tg-body">
+            <label class="field-label">Chu kỳ gửi (phút)</label>
+            <input type="number" id="scheduler-minutes" value="30" min="5" max="480" class="field-input"/>
+            <div class="scheduler-status" id="scheduler-status">Scheduler chưa chạy</div>
+            <div class="btn-row">
+              <button class="btn btn-green" id="btn-sched-start" onclick="startScheduler()">▶ Bắt đầu</button>
+              <button class="btn btn-danger" id="btn-sched-stop" onclick="stopScheduler()">⏹ Dừng</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ PAGE: LOGS ══════════════ -->
+    <section class="page" id="page-logs">
+      <div class="card full-card">
+        <div class="card-header">
+          <span>🖥 Log hệ thống</span>
+          <button class="btn btn-sm" onclick="refreshLogs()">↻ Làm mới</button>
+        </div>
+        <div class="card-body">
+          <pre class="log-console" id="log-console">Đang tải log...</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Đang lấy dữ liệu từ Yahoo Finance...</div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
