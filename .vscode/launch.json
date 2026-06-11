@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/namdo/Documents/code",
-      "program": "/Users/namdo/Documents/code/build/Debug/outDebug"
+      "cwd": "/Users/namdo/Documents/code/bot",
+      "program": "/Users/namdo/Documents/code/bot/build/Debug/outDebug"
     }
   ]
 }
