@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en" data-api-origin="https://allevia-healthcare-staffing.huoucaocodthw.chatgpt.site">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f4f9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Allevia">
+  <title>Allevia | Healthcare Worker App</title>
+  <meta name="description" content="Allevia Healthcare Staffing - Worker mobile application. Find shifts, GPS & QR check-in, real-time payouts.">
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-base: linear-gradient(135deg, #f0f4f9 0%, #e2eefa 55%, #f6f8fc 100%);
+  --bg-surface: rgba(255, 255, 255, 0.72);
+  --bg-card: rgba(255, 255, 255, 0.75);
+  --border-color: rgba(148, 163, 184, 0.18);
+  
+  --color-teal: hsl(175, 80%, 30%);
+  --color-mint: hsl(142, 70%, 32%);
+  --color-violet: hsl(226, 84%, 55%);
+  --color-amber: hsl(28, 85%, 43%);
+  --color-rose: hsl(350, 75%, 45%);
+  
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
+  
+  --font-display: 'Outfit', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  --shadow-card: 0 4px 15px -3px rgba(148, 163, 184, 0.1), 0 2px 6px -2px rgba(148, 163, 184, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Header */
+header {
+  width: 100%;
+  max-width: 480px;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--color-violet), var(--color-teal));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.logo-icon svg { width: 20px; height: 20px; fill: currentColor; }
+.logo-text h1 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--text-dark); }
+
+.sync-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-mint);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+}
+.sync-badge.offline .sync-dot { background: var(--color-amber); }
+
+.logout-link {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+/* Phone Container (Simulator on desktop, full-width on mobile) */
+.phone-device {
+  width: 100%;
+  max-width: 420px;
+  min-height: calc(100vh - 60px);
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(148, 163, 184, 0.18);
+}
+
+@media (min-width: 480px) {
+  .phone-device {
+    margin: 16px 0;
+    border-radius: 36px;
+    border: 8px solid #e2e8f0;
+    min-height: 780px;
+    height: 780px;
+    overflow: hidden;
+  }
+}
+
+.phone-screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Content Views */
+.phone-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: none;
+}
+
+.phone-content.active { display: block; }
+
+/* Bottom Nav */
+.phone-navbar {
+  display: flex;
+  justify-content: space-around;
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 1px solid var(--border-color);
+  padding: 10px 0;
+  flex-shrink: 0;
+  z-index: 99;
+}
+
+.phone-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 25%;
+  text-decoration: none;
+}
+
+.phone-nav-item svg { width: 22px; height: 22px; fill: currentColor; margin-bottom: 3px; }
+.phone-nav-item.active { color: var(--color-violet); }
+
+/* User Card */
+.user-profile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+}
+
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-violet), var(--color-teal));
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.user-meta h3 { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--text-dark); }
+.user-meta p { font-size: 0.72rem; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+.badge-verified {
+  background: rgba(16, 185, 129, 0.08);
+  color: var(--color-mint);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.6rem;
+}
+
+/* Metrics */
+.worker-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 1.2rem;
+}
+
+.metric-pill {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 10px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.metric-pill span { font-size: 0.68rem; color: var(--text-muted); display: block; margin-bottom: 2px; }
+.metric-pill strong { font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--text-dark); }
+.metric-pill.success strong { color: var(--color-mint); }
+.metric-pill.accent strong { color: var(--color-violet); }
+
+/* Form Controls */
+.mobile-form-group { margin-bottom: 12px; }
+.mobile-form-group label { font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px; font-weight: 600; }
+.mobile-input, .mobile-select {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: inherit;
+}
+.mobile-input:focus, .mobile-select:focus { outline: none; border-color: var(--color-violet); }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  border-left: 3px solid var(--color-teal);
+  padding-left: 8px;
+  margin: 12px 0 8px 0;
+}
+
+/* Shift Cards */
+.shift-card {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-card);
+}
+
+.shift-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.shift-hospital { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--text-dark); }
+.shift-dept { font-size: 0.75rem; color: var(--color-teal); font-weight: 600; }
+.shift-wage { font-family: var(--font-display); font-size: 1.05rem; font-weight: 800; color: var(--color-mint); }
+
+.shift-details {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.btn-apply-mobile {
+  background: linear-gradient(135deg, var(--color-violet), #4f46e5);
+  border: none;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-applied-badge {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-violet);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+/* Geofencing & Radar */
+.geofence-container {
+  height: 180px;
+  background: radial-gradient(circle, #e2eefa 0%, #f1f5f9 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.geofence-radar {
+  width: 120px;
+  height: 120px;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radar-dot-center { width: 12px; height: 12px; background: var(--color-violet); border-radius: 50%; z-index: 2; }
+.radar-dot-worker {
+  width: 8px;
+  height: 8px;
+  background: var(--color-teal);
+  border-radius: 50%;
+  position: absolute;
+  top: 25px;
+  left: 40px;
+  z-index: 2;
+  transition: all 0.6s ease;
+}
+
+.geofence-status-text {
+  position: absolute;
+  bottom: 8px;
+  font-size: 0.7rem;
+  color: var(--color-violet);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.btn-checkin-action {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-mint));
+  color: #fff;
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.btn-checkin-action:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-checkout-action {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-rose), #e11d48);
+  color: #fff;
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.worker-evaluation-wait {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid rgba(217, 119, 6, 0.22);
+  border-radius: 14px;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.worker-evaluation-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--color-amber);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Wallet Payslips */
+.payslip-item {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-card);
+}
+
+.payslip-meta h5 { font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; color: var(--text-dark); }
+.payslip-meta span { font-size: 0.68rem; color: var(--text-muted); }
+.payslip-amount { font-size: 0.95rem; font-weight: 800; color: var(--color-mint); }
+
+/* QR Scanner simulation */
+.qr-scanner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.96);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.qr-scanner-overlay.active { display: flex; }
+.qr-box { width: 130px; height: 130px; border: 2px solid var(--color-violet); margin-bottom: 10px; position: relative; }
+
+/* Login Form Gate */
+.worker-login-modal {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-base);
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 18px;
+}
+
+.worker-login-modal[hidden] { display: none !important; }
+
+.login-card {
+  width: min(100%, 380px);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(51, 65, 85, 0.15);
+}
+
+.login-card h2 { font-family: var(--font-display); font-size: 1.35rem; color: var(--text-dark); margin-bottom: 4px; }
+.login-card p { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 16px; }
+
+.allevia-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 4500;
+  width: min(calc(100% - 28px), 400px);
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 18px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.allevia-toast.active { opacity: 1; transform: translate(-50%, 0); }
+</style>
+</head>
+<body>
+
+  <!-- Worker Personal Login Modal -->
+  <section class="worker-login-modal" id="worker-login-gate">
+    <div class="login-card">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <div class="logo-icon"><svg viewBox="0 0 64 64"><path d="M32 7 8 57h12l4.8-10.8h14.4L44 57h12L32 7Zm-3.6 29.6L32 27.8l3.6 8.8h-7.2Z"/></svg></div>
+        <div>
+          <h2>Worker Sign In</h2>
+          <p>Access your shifts on this phone</p>
+        </div>
+      </div>
+
+      <form id="worker-login-form">
+        <div class="mobile-form-group">
+          <label for="login-name">Full Name</label>
+          <input id="login-name" class="mobile-input" required placeholder="e.g. David Chen, RN">
+        </div>
+        <div class="mobile-form-group">
+          <label for="login-phone">Mobile Phone (used as your ID)</label>
+          <input id="login-phone" class="mobile-input" type="tel" required placeholder="e.g. 0901234567">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="mobile-form-group">
+            <label for="login-age">Age</label>
+            <input id="login-age" class="mobile-input" type="number" min="18" max="80" value="28" required>
+          </div>
+          <div class="mobile-form-group">
+            <label for="login-specialty">Role</label>
+            <select id="login-specialty" class="mobile-select">
+              <option value="Pediatric Nurse">Pediatric Nurse</option>
+              <option value="ICU Nurse">ICU Nurse</option>
+              <option value="ER Technician">ER Technician</option>
+              <option value="Midwife">Certified Midwife</option>
+              <option value="Pharmacist">Clinical Pharmacist</option>
+              <option value="Home Care Nurse">Home Care Nurse</option>
+              <option value="Geriatric Nurse">Geriatric Nurse</option>
+            </select>
+          </div>
+        </div>
+        <div class="mobile-form-group">
+          <label for="login-address">City / Address</label>
+          <input id="login-address" class="mobile-input" required placeholder="Current address">
+        </div>
+
+        <button type="submit" class="btn-apply-mobile" style="width:100%; padding:12px; font-size:0.9rem; margin-top:8px;">
+          Start Working on this Device →
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Mobile Header -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg viewBox="0 0 64 64"><path d="M32 7 8 57h12l4.8-10.8h14.4L44 57h12L32 7Zm-3.6 29.6L32 27.8l3.6 8.8h-7.2Z"/></svg>
+      </div>
+      <div class="logo-text">
+        <h1>Allevia</h1>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="sync-badge" id="sync-state-badge"><span class="sync-dot"></span> <span id="sync-text">Live Sync</span></span>
+      <button class="logout-link" id="btn-switch-account" type="button">Switch</button>
+    </div>
+  </header>
+
+  <!-- Main Mobile Device Screen -->
+  <div class="phone-device">
+    <div class="phone-screen">
+
+      <!-- ========================================== -->
+      <!-- TAB 1: PROFILE & CREDENTIALS               -->
+      <!-- ========================================== -->
+      <div id="view-profile" class="phone-content active">
+        <div class="user-profile-header">
+          <div class="user-avatar" id="worker-avatar-label">EV</div>
+          <div class="user-meta">
+            <h3 id="worker-display-name">Emma Vance, RN</h3>
+            <p>
+              Identity Checks: 
+              <span class="badge-verified" id="worker-kyc-badge">VERIFIED</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="worker-metrics-grid">
+          <div class="metric-pill success">
+            <span>Reliability Score</span>
+            <strong id="worker-reliability-val">99.2%</strong>
+          </div>
+          <div class="metric-pill accent">
+            <span>Reputation Star</span>
+            <strong id="worker-rating-val">5.0 ★</strong>
+          </div>
+        </div>
+
+        <div class="section-title">Work Preferences</div>
+        
+        <div class="mobile-form-group">
+          <label for="prof-specialty">Professional Role</label>
+          <select id="prof-specialty" class="mobile-select">
+            <option value="Pediatric Nurse">Pediatric Nurse</option>
+            <option value="ER Technician">ER Technician</option>
+            <option value="Midwife">Certified Midwife</option>
+            <option value="ICU Nurse">ICU Nurse</option>
+            <option value="Pharmacist">Clinical Pharmacist</option>
+            <option value="Home Care Nurse">Home Care Nurse</option>
+            <option value="Geriatric Nurse">Geriatric Nurse</option>
+          </select>
+        </div>
+
+        <div class="mobile-form-group">
+          <label for="prof-experience">Years of Experience</label>
+          <select id="prof-experience" class="mobile-select">
+            <option value="1">1 Year</option>
+            <option value="3">3 Years</option>
+            <option value="5">5 Years</option>
+            <option value="8">8 Years</option>
+            <option value="10">10+ Years</option>
+          </select>
+        </div>
+
+        <div class="mobile-form-group">
+          <label for="prof-license">Practice License Number</label>
+          <input type="text" id="prof-license" class="mobile-input" value="RN-948201-US">
+        </div>
+
+        <div class="section-title" style="border-left-color:var(--color-mint); margin-top:16px;">
+          Credential Verification Status
+        </div>
+        <div style="font-size:0.75rem; display:flex; flex-direction:column; gap:6px; background:#ffffff; padding:10px; border-radius:10px; border:1px solid var(--border-color)">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>ID & Biometrics (KYC)</span>
+            <span class="badge-verified">Verified</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Nursing Degree (BSN)</span>
+            <span class="badge-verified">Verified</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>State Board License</span>
+            <span class="badge-verified" id="license-verified-badge">Verified</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 2: FIND SHIFTS (MARKETPLACE)           -->
+      <!-- ========================================== -->
+      <div id="view-marketplace" class="phone-content">
+        <div class="section-title">Compatible Open Shifts</div>
+        <div style="font-size:0.7rem; color:var(--text-muted); margin-bottom:12px;" id="marketplace-summary-txt">
+          Showing matching shifts based on your profile.
+        </div>
+
+        <div id="mobile-shift-list-container">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div class="section-title" style="border-left-color:var(--color-rose); margin-top:20px;">
+          Filtered Shifts (Mismatched)
+        </div>
+        <div id="mobile-excluded-shifts-container">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 3: MY SHIFTS & GEOFENCE                -->
+      <!-- ========================================== -->
+      <div id="view-active-shifts" class="phone-content">
+        <div id="active-shift-empty-state" style="text-align:center; padding: 40px 10px; color: var(--text-muted);">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(0,0,0,0.12)" width="60" height="60" style="margin-bottom:12px;"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          <p style="font-size:0.85rem; font-weight:700; color:var(--text-dark);">No Active Shifts Scheduled</p>
+          <p style="font-size:0.7rem; margin-top:4px;">Apply for open shifts in the "Find Shifts" tab. When approved by the facility, your check-in card will appear here!</p>
+        </div>
+
+        <div id="active-shift-details-card" style="display:none;">
+          <div class="shift-card" style="border-color: var(--color-violet); background: rgba(59, 130, 246, 0.04); margin-bottom: 12px;">
+            <div class="shift-card-header">
+              <div>
+                <h4 class="shift-hospital" id="active-shift-hospital">St. Mary's General</h4>
+                <span class="shift-dept" id="active-shift-dept">Pediatric Ward</span>
+              </div>
+              <span class="badge-verified" id="active-shift-status-badge">Approved</span>
+            </div>
+            <div class="shift-details">
+              <div><span>Wage: </span><strong id="active-shift-wage-rate" style="color:var(--color-mint); font-weight:800;">$65.00/hr</strong></div>
+              <div><span>Duration: </span><span id="active-shift-duration-val">8 Hours</span></div>
+            </div>
+          </div>
+
+          <div id="active-shift-action-panel">
+            <div class="section-title" style="border-left-color: var(--color-amber);">
+              Presence Verification & Check-In
+            </div>
+            <p id="active-shift-location-help" style="font-size:0.75rem; color:var(--text-muted); margin-bottom: 12px;">
+              Verify presence inside facility geofence and scan badge to start shift.
+            </p>
+
+            <div class="geofence-container">
+              <div class="geofence-radar" id="geofence-radar-circle">
+                <div class="radar-dot-center" title="Hospital"></div>
+                <div class="radar-dot-worker" id="geofence-worker-node" title="Your GPS"></div>
+              </div>
+              <div class="geofence-status-text" id="geofence-status-txt">Outside Perimeter</div>
+
+              <div class="qr-scanner-overlay" id="qr-camera-screen">
+                <div class="qr-box"></div>
+                <div style="font-size:0.75rem; font-weight:700; color:var(--text-dark);">ALIGN QR CODE</div>
+                <div style="font-size:0.65rem; color:var(--text-muted);">Scanning badge...</div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px; margin-bottom:12px;">
+              <button id="btn-simulate-gps-move" class="btn-apply-mobile" style="flex:1; background:#ffffff; color:var(--text-dark); border:1px solid var(--border-color);">
+                📍 Walk to Hospital
+              </button>
+              <button id="btn-trigger-qr" class="btn-apply-mobile" style="flex:1; background:#ffffff; color:var(--text-dark); border:1px solid var(--border-color);">
+                📷 Scan Badge QR
+              </button>
+            </div>
+
+            <button id="btn-mobile-checkin" class="btn-checkin-action" disabled>
+              Confirm Presence & Check-In
+            </button>
+            
+            <button id="btn-mobile-checkout" class="btn-checkout-action" style="display:none;">
+              Finish Shift & Check-Out
+            </button>
+          </div>
+
+          <div class="worker-evaluation-wait" id="worker-awaiting-evaluation-panel" hidden>
+            <span class="worker-evaluation-icon">✓</span>
+            <div>
+              <strong style="font-size:0.85rem; color:var(--text-dark);">Shift submitted for review</strong>
+              <p style="font-size:0.72rem; color:var(--text-muted); margin-top:4px; line-height:1.4;">
+                Your supervisor at the hospital is completing your evaluation. Once submitted, your earnings will disburse directly to your wallet!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TAB 4: WALLET & DEPOSITS                   -->
+      <!-- ========================================== -->
+      <div id="view-wallet" class="phone-content">
+        <div class="section-title" style="border-left-color:var(--color-mint);">My Wallet & Earnings</div>
+        
+        <div style="background:linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(13, 148, 136, 0.04)); border:1px solid rgba(16, 185, 129, 0.2); border-radius:18px; padding:18px; text-align:center; margin-bottom:1.25rem;">
+          <span style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:4px;">Available Balance</span>
+          <strong style="font-size:2.2rem; font-family:var(--font-display); color:var(--color-mint);" id="wallet-balance-val">$0.00</strong>
+          <div style="font-size:0.65rem; color:var(--text-muted); margin-top:6px;">Instant payouts integrated with Bank & E-Wallet</div>
+        </div>
+
+        <div class="section-title">Shift Payslips & Deposits</div>
+        <div id="mobile-wallet-payslips">
+          <!-- Dynamic payslips -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="phone-navbar">
+      <button class="phone-nav-item active" data-target="view-profile" type="button">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        Profile
+      </button>
+      <button class="phone-nav-item" data-target="view-marketplace" type="button">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg>
+        Find Shifts
+      </button>
+      <button class="phone-nav-item" data-target="view-active-shifts" id="phone-nav-active-shifts" type="button">
+        <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+        My Shifts
+      </button>
+      <button class="phone-nav-item" data-target="view-wallet" type="button">
+        <svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+        Wallet
+      </button>
+    </nav>
+  </div>
+
+  <div class="allevia-toast" id="allevia-toast"></div>
+
+  <!-- Javascript Engine -->
+  <script>
+/**
+ * Allevia Worker App Engine - Multi-Worker & Multi-Device (dataVersion: 4)
+ */
+
+const DEFAULT_SHIFTS = [
+  { id: "sh-001", facilityCode: "0001", hospitalName: "St. Mary's General", department: "Pediatric Ward", positionNeeded: "Pediatric Nurse", experienceRequired: 5, hourlyWage: 65.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 140 },
+  { id: "sh-002", facilityCode: "002", hospitalName: "Tiara's Hospital", department: "Maternity Ward", positionNeeded: "Midwife", experienceRequired: 3, hourlyWage: 68.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 260 },
+  { id: "sh-003", facilityCode: "003", hospitalName: "Yuki's Hospital", department: "Intensive Care Unit", positionNeeded: "ICU Nurse", experienceRequired: 5, hourlyWage: 82.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 12, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 380 },
+  { id: "sh-004", facilityCode: "004", hospitalName: "Daniel's Hospital", department: "Pharmacy", positionNeeded: "Pharmacist", experienceRequired: 3, hourlyWage: 74.00, genderPreference: "No Preference", schedule: "Weekend Day Shift", durationHours: 10, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 520 },
+  { id: "sh-005", facilityCode: "101", hospitalName: "Happy Homecare", department: "Home Care", positionNeeded: "Home Care Nurse", experienceRequired: 2, hourlyWage: 55.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 170 },
+  { id: "sh-006", facilityCode: "201", hospitalName: "Smile Nursingcare", department: "Nursing Care", positionNeeded: "Geriatric Nurse", experienceRequired: 3, hourlyWage: 59.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 210 },
+  { id: "sh-007", facilityCode: "002", hospitalName: "Tiara's Hospital", department: "Pediatric Ward", positionNeeded: "Pediatric Nurse", experienceRequired: 4, hourlyWage: 70.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 275 },
+  { id: "sh-008", facilityCode: "004", hospitalName: "Daniel's Hospital", department: "Intensive Care Unit", positionNeeded: "ICU Nurse", experienceRequired: 4, hourlyWage: 79.00, genderPreference: "No Preference", schedule: "Weekend Day Shift", durationHours: 12, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 505 }
+];
+
+let state = {
+  dataVersion: 4,
+  workers: {},
+  shifts: JSON.parse(JSON.stringify(DEFAULT_SHIFTS)),
+  billingLedger: { estimatedCosts: 0, commissions: 0, grossWages: 0, settledPayouts: 0 }
+};
+
+let currentWorkerId = null;
+
+function getCurrentWorker() {
+  if (!currentWorkerId) return null;
+  if (!state.workers[currentWorkerId]) {
+    state.workers[currentWorkerId] = {
+      id: currentWorkerId,
+      name: "Healthcare Professional",
+      initials: "HP",
+      phone: "",
+      age: 28,
+      address: "",
+      specialty: "Pediatric Nurse",
+      experience: 5,
+      licenseNumber: "RN-948201-US",
+      licenseVerified: true,
+      reliabilityScore: 99.2,
+      ratingScore: 5.0,
+      ratingCount: 0,
+      ratingTotal: 0,
+      walletBalance: 0.00,
+      isInGeofence: false,
+      hasScannedQR: false,
+      isSuspended: false
+    };
+  }
+  return state.workers[currentWorkerId];
+}
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function normalizeStateShape(targetState) {
+  if (!targetState) return targetState;
+  targetState.dataVersion = 4;
+  if (!targetState.workers || typeof targetState.workers !== "object") targetState.workers = {};
+  if (!Array.isArray(targetState.shifts) || targetState.shifts.length === 0) {
+    targetState.shifts = JSON.parse(JSON.stringify(DEFAULT_SHIFTS));
+  }
+
+  // Convert legacy workerProfile into workers map if needed
+  if (targetState.workerProfile && typeof targetState.workerProfile === "object" && targetState.workerProfile.name) {
+    const legacyId = targetState.workerProfile.id || ("wk_" + (targetState.workerProfile.phone ? String(targetState.workerProfile.phone).replace(/[^0-9]/g, "") : "legacy"));
+    if (!targetState.workers[legacyId]) {
+      targetState.workers[legacyId] = Object.assign({}, targetState.workerProfile, { id: legacyId });
+    }
+  }
+
+  for (const id in targetState.workers) {
+    const w = targetState.workers[id];
+    w.id = id;
+    w.name = w.name || "Healthcare Professional";
+    if (!w.initials) {
+      w.initials = w.name.replace(/,.*$/, "").trim().split(/\s+/).slice(0, 2).map(p => p[0]).join("").toUpperCase() || "HP";
+    }
+    w.reliabilityScore = Number(w.reliabilityScore) || 99.0;
+    w.ratingScore = Number(w.ratingScore) || 5.0;
+    w.walletBalance = Number(w.walletBalance) || 0;
+  }
+
+  targetState.shifts.forEach(shift => {
+    if (!Array.isArray(shift.applicants)) shift.applicants = [];
+    if (!shift.facilityCode) shift.facilityCode = shift.hospitalName === "St. Mary's General" ? "0001" : "legacy";
+  });
+
+  return targetState;
+}
+
+// Marketplace Matching
+function runSmartMatching() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+
+  const matchContainer = document.getElementById("mobile-shift-list-container");
+  const exclContainer = document.getElementById("mobile-excluded-shifts-container");
+  matchContainer.innerHTML = "";
+  exclContainer.innerHTML = "";
+
+  let matchCount = 0;
+
+  state.shifts.forEach(shift => {
+    const specialtyMatches = (shift.positionNeeded === worker.specialty);
+    const hasEnoughExp = (worker.experience >= shift.experienceRequired);
+    const isLicenseClean = worker.licenseVerified && !worker.isSuspended;
+    const isMatch = specialtyMatches && hasEnoughExp && isLicenseClean;
+
+    // Check if current worker has already applied to this shift
+    const myApp = (shift.applicants || []).find(a => a.workerId === worker.id);
+
+    if (isMatch) {
+      matchCount++;
+      const card = document.createElement("div");
+      card.className = "shift-card";
+      
+      let actionMarkup = `<button class="btn-apply-mobile" type="button" onclick="applyForShift('${shift.id}')">Apply Shift</button>`;
+      if (myApp) {
+        if (myApp.status === "Applied") {
+          actionMarkup = `<span class="btn-applied-badge">✓ Applied (Pending Review)</span>`;
+        } else if (myApp.status === "Approved") {
+          actionMarkup = `<span class="btn-applied-badge" style="color:var(--color-mint); border-color:var(--color-mint);">✓ Approved! On Duty</span>`;
+        } else if (myApp.status === "Active") {
+          actionMarkup = `<span class="btn-applied-badge" style="color:var(--color-mint);">● On Site</span>`;
+        } else if (myApp.status === "Completed") {
+          actionMarkup = `<span class="btn-applied-badge">✓ Completed</span>`;
+        }
+      }
+
+      card.innerHTML = `
+        <div class="shift-card-header">
+          <div>
+            <h4 class="shift-hospital">${escapeHtml(shift.hospitalName)}</h4>
+            <span class="shift-dept">${escapeHtml(shift.department)}</span>
+          </div>
+          <span class="shift-wage">$${shift.hourlyWage.toFixed(2)}/hr</span>
+        </div>
+        <div class="shift-details">
+          <div><span>Duration: </span>${shift.durationHours} Hours</div>
+          <div><span>Distance: </span>${shift.distanceMeters || 120}m Away</div>
+          <div style="grid-column: span 2;"><span>Schedule: </span>${escapeHtml(shift.schedule)}</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(148,163,184,0.1); padding-top:8px;">
+          <span style="font-size:0.7rem; font-weight:700; color:var(--color-violet);">98% Match</span>
+          ${actionMarkup}
+        </div>
+      `;
+      matchContainer.appendChild(card);
+    } else {
+      let reason = "Mismatched role";
+      if (!specialtyMatches) reason = `Requires ${shift.positionNeeded}`;
+      else if (!hasEnoughExp) reason = `Requires ${shift.experienceRequired} Yrs Exp`;
+      else if (!isLicenseClean) reason = `License review required`;
+
+      const excl = document.createElement("div");
+      excl.style.cssText = "background:#fff; border:1px dashed var(--border-color); border-radius:12px; padding:8px 12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:0.72rem;";
+      excl.innerHTML = `
+        <div>
+          <strong>${escapeHtml(shift.hospitalName)}</strong> - ${escapeHtml(shift.department)}
+        </div>
+        <span style="color:var(--color-rose); font-weight:600; font-size:0.65rem;">${reason}</span>
+      `;
+      exclContainer.appendChild(excl);
+    }
+  });
+
+  document.getElementById("marketplace-summary-txt").textContent = 
+    `Showing ${matchCount} matching shifts for your ${worker.specialty} profile (${worker.experience} Yrs Exp).`;
+
+  if (matchCount === 0) {
+    matchContainer.innerHTML = `<div style="text-align:center; padding:24px; color:var(--text-muted); font-size:0.75rem;">No open shifts currently match your specialty and experience.</div>`;
+  }
+}
+
+// Applying for a shift
+function applyForShift(shiftId) {
+  const worker = getCurrentWorker();
+  const shift = state.shifts.find(s => s.id === shiftId);
+  if (!worker || !shift) return;
+
+  if (!Array.isArray(shift.applicants)) shift.applicants = [];
+  const existing = shift.applicants.find(a => a.workerId === worker.id);
+  if (existing) {
+    showAlleviaToast("You have already applied for this shift.");
+    return;
+  }
+
+  const newApp = {
+    workerId: worker.id,
+    workerName: worker.name,
+    name: worker.name,
+    workerInitials: worker.initials,
+    initials: worker.initials,
+    phone: worker.phone || "",
+    specialty: worker.specialty,
+    experience: worker.experience,
+    licenseNumber: worker.licenseNumber,
+    licenseVerified: worker.licenseVerified && !worker.isSuspended,
+    reliabilityScore: worker.reliabilityScore,
+    ratingScore: worker.ratingScore,
+    status: "Applied",
+    appliedAt: Date.now(),
+    slaExpiresAt: Date.now() + 12 * 3600 * 1000,
+    checkedInTime: null,
+    checkedInAt: null,
+    checkedOutTime: null,
+    finishedAt: null,
+    ratingFromHospital: null,
+    evaluationComment: "",
+    paymentStatus: "Not Started"
+  };
+
+  shift.applicants.push(newApp);
+  if (shift.status === "Open") shift.status = "Applied";
+
+  renderConnectedState();
+  showAlleviaToast(`Applied to ${shift.hospitalName}! The hospital can now review your credentials.`);
+  notifyLocalChange("applicant_applied", { shiftId, applicant: newApp, worker });
+  queueCloudSync(0);
+}
+
+// Render My Active Shift Tab
+function renderActiveShift() {
+  const worker = getCurrentWorker();
+  const emptyState = document.getElementById("active-shift-empty-state");
+  const card = document.getElementById("active-shift-details-card");
+  const checkinBtn = document.getElementById("btn-mobile-checkin");
+  const checkoutBtn = document.getElementById("btn-mobile-checkout");
+  const waitPanel = document.getElementById("worker-awaiting-evaluation-panel");
+  const actionPanel = document.getElementById("active-shift-action-panel");
+  const navBadge = document.getElementById("phone-nav-active-shifts");
+
+  if (!worker) return;
+
+  // Find any shift where this worker is Approved, Active, or Awaiting Evaluation
+  let myShift = null;
+  let myApp = null;
+
+  for (const s of state.shifts) {
+    const a = (s.applicants || []).find(app => app.workerId === worker.id);
+    if (a && ["Approved", "Active", "Awaiting Evaluation"].includes(a.status)) {
+      myShift = s;
+      myApp = a;
+      break;
+    }
+  }
+
+  if (!myShift || !myApp) {
+    emptyState.style.display = "block";
+    card.style.display = "none";
+    navBadge.removeAttribute("style");
+    return;
+  }
+
+  emptyState.style.display = "none";
+  card.style.display = "block";
+  navBadge.style.color = "var(--color-amber)";
+
+  document.getElementById("active-shift-hospital").textContent = myShift.hospitalName;
+  document.getElementById("active-shift-dept").textContent = myShift.department;
+  document.getElementById("active-shift-wage-rate").textContent = `$${myShift.hourlyWage.toFixed(2)}/hr`;
+  document.getElementById("active-shift-duration-val").textContent = `${myShift.durationHours} Hours`;
+
+  const statusBadge = document.getElementById("active-shift-status-badge");
+  statusBadge.textContent = myApp.status;
+
+  if (myApp.status === "Approved") {
+    actionPanel.style.display = "block";
+    waitPanel.hidden = true;
+    checkinBtn.style.display = "block";
+    checkoutBtn.style.display = "none";
+    checkinBtn.disabled = !(worker.isInGeofence && worker.hasScannedQR);
+  } else if (myApp.status === "Active") {
+    actionPanel.style.display = "block";
+    waitPanel.hidden = true;
+    checkinBtn.style.display = "none";
+    checkoutBtn.style.display = "block";
+    statusBadge.textContent = "Active / On Site";
+  } else if (myApp.status === "Awaiting Evaluation") {
+    actionPanel.style.display = "none";
+    waitPanel.hidden = false;
+    statusBadge.textContent = "Awaiting Evaluation";
+  }
+
+  const geofenceText = document.getElementById("geofence-status-txt");
+  if (worker.isInGeofence) {
+    geofenceText.textContent = "Within Geofence (12m)";
+    geofenceText.style.color = "var(--color-mint)";
+    document.getElementById("geofence-radar-circle").style.borderColor = "var(--color-mint)";
+  } else {
+    geofenceText.textContent = "Outside Perimeter";
+    geofenceText.style.color = "var(--color-violet)";
+    document.getElementById("geofence-radar-circle").style.borderColor = "rgba(59, 130, 246, 0.2)";
+  }
+}
+
+// GPS & QR Simulator
+function simulateGPSMovement() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+  const node = document.getElementById("geofence-worker-node");
+  node.style.top = "54px";
+  node.style.left = "54px";
+
+  setTimeout(() => {
+    worker.isInGeofence = true;
+    renderActiveShift();
+    showAlleviaToast("GPS Verified: You are inside facility perimeter.");
+    queueCloudSync(100);
+  }, 800);
+}
+
+function triggerQRScanner() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+  const overlay = document.getElementById("qr-camera-screen");
+  overlay.classList.add("active");
+
+  setTimeout(() => {
+    overlay.classList.remove("active");
+    worker.hasScannedQR = true;
+    renderActiveShift();
+    showAlleviaToast("Facility Badge QR code verified!");
+    queueCloudSync(100);
+  }, 1500);
+}
+
+function workerCheckIn() {
+  const worker = getCurrentWorker();
+  if (!worker || !worker.isInGeofence || !worker.hasScannedQR) return;
+
+  for (const s of state.shifts) {
+    const a = (s.applicants || []).find(app => app.workerId === worker.id && app.status === "Approved");
+    if (a) {
+      a.status = "Active";
+      a.checkedInTime = new Date().toLocaleTimeString();
+      a.checkedInAt = Date.now();
+      s.status = "Active";
+      renderConnectedState();
+      showAlleviaToast(`Checked in at ${a.checkedInTime}! Shift is now live.`);
+      notifyLocalChange("applicant_status_change", { shiftId: s.id, workerId: worker.id, status: "Active", applicantData: a });
+      queueCloudSync(0);
+      break;
+    }
+  }
+}
+
+function workerCheckOut() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+
+  for (const s of state.shifts) {
+    const a = (s.applicants || []).find(app => app.workerId === worker.id && app.status === "Active");
+    if (a) {
+      a.status = "Awaiting Evaluation";
+      a.checkedOutTime = new Date().toLocaleTimeString();
+      a.finishedAt = Date.now();
+      s.status = "Awaiting Evaluation";
+      worker.isInGeofence = false;
+      worker.hasScannedQR = false;
+      renderConnectedState();
+      showAlleviaToast("Shift finished! Sent to supervisor for evaluation & payment release.");
+      notifyLocalChange("applicant_status_change", { shiftId: s.id, workerId: worker.id, status: "Awaiting Evaluation", applicantData: a });
+      queueCloudSync(0);
+      break;
+    }
+  }
+}
+
+// Wallet & Payslips
+function renderWallet() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+
+  document.getElementById("wallet-balance-val").textContent = `$${(worker.walletBalance || 0).toFixed(2)}`;
+  const container = document.getElementById("mobile-wallet-payslips");
+  container.innerHTML = "";
+
+  const paidShifts = [];
+  state.shifts.forEach(s => {
+    (s.applicants || []).forEach(a => {
+      if (a.workerId === worker.id && a.paymentStatus === "Paid") {
+        paidShifts.push({ shift: s, applicant: a });
+      }
+    });
+  });
+
+  if (paidShifts.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.75rem;">No paid shifts yet. Payments appear here immediately upon supervisor sign-off.</div>`;
+    return;
+  }
+
+  paidShifts.forEach(item => {
+    const { shift, applicant } = item;
+    const div = document.createElement("div");
+    div.className = "payslip-item";
+    div.innerHTML = `
+      <div class="payslip-meta">
+        <h5>${escapeHtml(shift.department)} Shift (${applicant.ratingFromHospital || 5} ★)</h5>
+        <span>${escapeHtml(shift.hospitalName)} • ${shift.durationHours} hrs</span>
+        ${applicant.evaluationComment ? `<p style="font-size:0.68rem; color:var(--text-dark); margin-top:3px;">"${escapeHtml(applicant.evaluationComment)}"</p>` : ""}
+      </div>
+      <span class="payslip-amount">+$${Number(applicant.payoutAmount || 0).toFixed(2)}</span>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function renderProfile() {
+  const worker = getCurrentWorker();
+  if (!worker) return;
+
+  document.getElementById("worker-display-name").textContent = worker.name;
+  document.getElementById("worker-avatar-label").textContent = worker.initials || "HP";
+  document.getElementById("worker-reliability-val").textContent = `${Number(worker.reliabilityScore || 99.0).toFixed(1)}%`;
+  document.getElementById("worker-rating-val").textContent = `${Number(worker.ratingScore || 5.0).toFixed(1)} ★`;
+  document.getElementById("prof-specialty").value = worker.specialty || "Pediatric Nurse";
+  document.getElementById("prof-experience").value = String(worker.experience || 5);
+  document.getElementById("prof-license").value = worker.licenseNumber || "RN-948201-US";
+}
+
+function showAlleviaToast(msg) {
+  const t = document.getElementById("allevia-toast");
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add("active");
+  setTimeout(() => t.classList.remove("active"), 4500);
+}
+
+function renderConnectedState() {
+  normalizeStateShape(state);
+  renderProfile();
+  runSmartMatching();
+  renderActiveShift();
+  renderWallet();
+}
+
+// Local Real-time Multi-Tab / Multi-Window Synchronization
+const SYNC_CHANNEL_NAME = "allevia_hospital_worker_sync_v4";
+const syncBroadcast = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(SYNC_CHANNEL_NAME) : null;
+
+function notifyLocalChange(type, payload) {
+  const msg = { type, payload, timestamp: Date.now() };
+  if (syncBroadcast) {
+    try { syncBroadcast.postMessage(msg); } catch (e) {}
+  }
+  try {
+    localStorage.setItem("allevia_local_sync_event", JSON.stringify(msg));
+  } catch (e) {}
+}
+
+function handleIncomingSync(data) {
+  if (!data || !data.type) return;
+  if (data.type === "applicant_applied" && data.payload) {
+    const { shiftId, applicant, worker } = data.payload;
+    if (worker && worker.id) state.workers[worker.id] = worker;
+    const shift = state.shifts.find(s => s.id === shiftId);
+    if (shift) {
+      if (!Array.isArray(shift.applicants)) shift.applicants = [];
+      const idx = shift.applicants.findIndex(a => a.workerId === applicant.workerId);
+      if (idx >= 0) shift.applicants[idx] = applicant;
+      else shift.applicants.push(applicant);
+      if (shift.status === "Open") shift.status = "Applied";
+    }
+    renderConnectedState();
+  } else if (data.type === "applicant_status_change" && data.payload) {
+    const { shiftId, workerId, status, applicantData } = data.payload;
+    const shift = state.shifts.find(s => s.id === shiftId);
+    if (shift) {
+      const app = (shift.applicants || []).find(a => a.workerId === workerId);
+      if (app) {
+        app.status = status;
+        if (applicantData) Object.assign(app, applicantData);
+        if (workerId === currentWorkerId && status === "Approved") {
+          showAlleviaToast(`🎉 Approved! ${shift.hospitalName} accepted your application for ${shift.department}!`);
+        }
+      }
+    }
+    renderConnectedState();
+  } else if (data.type === "payment_disbursed" && data.payload) {
+    const { workerId, newBalance, payoutAmount } = data.payload;
+    if (state.workers[workerId]) {
+      state.workers[workerId].walletBalance = newBalance;
+    }
+    if (workerId === currentWorkerId) {
+      showAlleviaToast(`🎉 Payment disbursed! $${Number(payoutAmount).toFixed(2)} added to your wallet!`);
+    }
+    renderConnectedState();
+  } else if (data.type === "demo_cleared") {
+    state.shifts.forEach(s => {
+      s.status = "Open";
+      s.assignedWorkerId = null;
+      s.applicants = [];
+    });
+    renderConnectedState();
+  }
+}
+
+if (syncBroadcast) {
+  syncBroadcast.onmessage = (event) => handleIncomingSync(event.data);
+}
+window.addEventListener("storage", (event) => {
+  if (event.key === "allevia_local_sync_event" && event.newValue) {
+    try {
+      handleIncomingSync(JSON.parse(event.newValue));
+    } catch (e) {}
+  }
+});
+
+// Cloud Synchronization
+const cloudSyncRuntime = {
+  started: false,
+  loading: false,
+  saving: false,
+  version: 0,
+  pollTimer: null,
+  saveTimer: null
+};
+
+function getApiUrl(path) {
+  const configuredOrigin = (document.documentElement.getAttribute("data-api-origin") || "").replace(/\/$/, "");
+  if (configuredOrigin) return configuredOrigin + path;
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    return new URL(path, location.origin).toString();
+  }
+  return null;
+}
+
+function setCloudStatus(text, mode) {
+  const badge = document.getElementById("sync-state-badge");
+  const label = document.getElementById("sync-text");
+  if (!badge || !label) return;
+  badge.classList.remove("offline");
+  if (mode) badge.classList.add(mode);
+  label.textContent = text;
+}
+
+async function loadCloudState() {
+  if (!cloudSyncRuntime.started || cloudSyncRuntime.loading || cloudSyncRuntime.saving) return;
+  const url = getApiUrl("/api/state");
+  if (!url) return;
+
+  cloudSyncRuntime.loading = true;
+  try {
+    const res = await fetch(url, { method: "GET", headers: { "accept": "application/json" }, cache: "no-store", mode: "cors" });
+    if (!res.ok) throw new Error("Sync load failed");
+    const payload = await res.json();
+    if (payload.state && (payload.version > cloudSyncRuntime.version || !cloudSyncRuntime.version)) {
+      mergeStateFromRemote(payload.state);
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      renderConnectedState();
+    }
+    setCloudStatus("Live Sync", "");
+  } catch (err) {
+    setCloudStatus("Offline", "offline");
+  } finally {
+    cloudSyncRuntime.loading = false;
+  }
+}
+
+function mergeStateFromRemote(remoteState) {
+  if (!remoteState) return;
+  normalizeStateShape(remoteState);
+  normalizeStateShape(state);
+
+  // Preserve all workers from remote
+  for (const wId in remoteState.workers) {
+    if (wId === currentWorkerId) {
+      // Server may have updated our wallet or ratings
+      const remoteW = remoteState.workers[wId];
+      const localW = state.workers[wId];
+      if (remoteW && localW) {
+        if (remoteW.walletBalance !== localW.walletBalance) {
+          if (remoteW.walletBalance > localW.walletBalance) {
+            showAlleviaToast(`Payment disbursed! Your new wallet balance is $${remoteW.walletBalance.toFixed(2)}`);
+          }
+          localW.walletBalance = remoteW.walletBalance;
+        }
+        localW.ratingScore = remoteW.ratingScore;
+        localW.ratingCount = remoteW.ratingCount;
+        localW.reliabilityScore = remoteW.reliabilityScore;
+      }
+    } else {
+      state.workers[wId] = remoteState.workers[wId];
+    }
+  }
+
+  // Merge shifts and applicants
+  if (Array.isArray(remoteState.shifts)) {
+    remoteState.shifts.forEach(remoteShift => {
+      let localShift = state.shifts.find(s => s.id === remoteShift.id);
+      if (!localShift) {
+        state.shifts.push(remoteShift);
+        return;
+      }
+      if (remoteShift.status && remoteShift.status !== "Open") {
+        localShift.status = remoteShift.status;
+      }
+      if (remoteShift.assignedWorkerId) {
+        localShift.assignedWorkerId = remoteShift.assignedWorkerId;
+      }
+
+      if (!Array.isArray(localShift.applicants)) localShift.applicants = [];
+      if (Array.isArray(remoteShift.applicants)) {
+        remoteShift.applicants.forEach(remoteApp => {
+          let localApp = localShift.applicants.find(a => a.workerId === remoteApp.workerId);
+          if (!localApp) {
+            localShift.applicants.push(remoteApp);
+          } else {
+            // Check if Hospital approved or updated this worker
+            if (remoteApp.workerId === currentWorkerId && remoteApp.status !== localApp.status) {
+              if (remoteApp.status === "Approved") {
+                showAlleviaToast(`🎉 Approved! ${remoteShift.hospitalName} accepted your application for ${remoteShift.department}!`);
+              } else if (remoteApp.status === "Rejected") {
+                showAlleviaToast(`Shift update: Application for ${remoteShift.department} was not selected.`);
+              }
+            }
+            Object.assign(localApp, remoteApp);
+          }
+        });
+      }
+    });
+  }
+}
+
+async function saveCloudState() {
+  if (!cloudSyncRuntime.started || cloudSyncRuntime.saving) return;
+  const url = getApiUrl("/api/state");
+  if (!url) return;
+
+  cloudSyncRuntime.saving = true;
+  setCloudStatus("Saving…", "");
+  try {
+    normalizeStateShape(state);
+    const workerProfile = getCurrentWorker() || Object.values(state.workers)[0] || {
+      id: "wk_emma",
+      name: "Emma Vance, RN",
+      specialty: "Pediatric Nurse",
+      experience: 5
+    };
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json", "accept": "application/json" },
+      cache: "no-store",
+      mode: "cors",
+      body: JSON.stringify({
+        baseVersion: cloudSyncRuntime.version,
+        state: {
+          dataVersion: 4,
+          workerProfile: workerProfile,
+          workers: state.workers,
+          shifts: state.shifts,
+          billingLedger: state.billingLedger,
+          currentSeasonality: state.currentSeasonality || 1
+        }
+      })
+    });
+    const payload = await res.json();
+    if (res.status === 409 && payload.state) {
+      mergeStateFromRemote(payload.state);
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      renderConnectedState();
+      cloudSyncRuntime.saving = false;
+      queueCloudSync(100);
+      return;
+    }
+    if (res.ok) {
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      setCloudStatus("Live Sync", "");
+    } else {
+      console.warn("Save cloud state returned non-ok status:", res.status, payload);
+      setCloudStatus("Sync Failed", "offline");
+    }
+  } catch (err) {
+    console.error("Save cloud state error:", err);
+    setCloudStatus("Sync Failed", "offline");
+  } finally {
+    cloudSyncRuntime.saving = false;
+  }
+}
+
+function queueCloudSync(delay = 150) {
+  clearTimeout(cloudSyncRuntime.saveTimer);
+  cloudSyncRuntime.saveTimer = setTimeout(saveCloudState, delay);
+}
+
+function startCloudSync() {
+  cloudSyncRuntime.started = true;
+  loadCloudState();
+  clearInterval(cloudSyncRuntime.pollTimer);
+  cloudSyncRuntime.pollTimer = setInterval(loadCloudState, 1500);
+}
+
+// Session Management
+const SESSION_KEY = "allevia_worker_device_session_v4";
+
+function restoreSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (raw) {
+      const sess = JSON.parse(raw);
+      if (sess && sess.id) {
+        currentWorkerId = sess.id;
+        state.workers[sess.id] = sess;
+        document.getElementById("worker-login-gate").hidden = true;
+        renderConnectedState();
+        startCloudSync();
+        return true;
+      }
+    }
+  } catch (e) {}
+  document.getElementById("worker-login-gate").hidden = false;
+  startCloudSync();
+  return false;
+}
+
+function saveSession(worker) {
+  try {
+    localStorage.setItem(SESSION_KEY, JSON.stringify(worker));
+  } catch (e) {}
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  normalizeStateShape(state);
+
+  // Bottom Nav Tabs
+  document.querySelectorAll(".phone-nav-item").forEach(item => {
+    item.addEventListener("click", e => {
+      document.querySelectorAll(".phone-nav-item").forEach(n => n.classList.remove("active"));
+      document.querySelectorAll(".phone-content").forEach(c => c.classList.remove("active"));
+      const btn = e.currentTarget;
+      btn.classList.add("active");
+      const target = document.getElementById(btn.getAttribute("data-target"));
+      if (target) target.classList.add("active");
+    });
+  });
+
+  // Login Form
+  document.getElementById("worker-login-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const name = document.getElementById("login-name").value.trim();
+    const phone = document.getElementById("login-phone").value.trim();
+    const age = parseInt(document.getElementById("login-age").value) || 28;
+    const specialty = document.getElementById("login-specialty").value;
+    const address = document.getElementById("login-address").value.trim();
+
+    const cleanPhone = phone.replace(/[^0-9]/g, "");
+    const workerId = "wk_" + (cleanPhone || Math.random().toString(36).substr(2, 8));
+    currentWorkerId = workerId;
+
+    if (!state.workers[workerId]) {
+      state.workers[workerId] = {
+        id: workerId,
+        name: name,
+        initials: name.replace(/,.*$/, "").trim().split(/\s+/).slice(0, 2).map(p => p[0]).join("").toUpperCase() || "HP",
+        phone: phone,
+        age: age,
+        address: address,
+        specialty: specialty,
+        experience: 5,
+        licenseNumber: "RN-" + Math.floor(100000 + Math.random() * 900000) + "-US",
+        licenseVerified: true,
+        reliabilityScore: 99.0,
+        ratingScore: 5.0,
+        ratingCount: 0,
+        ratingTotal: 0,
+        walletBalance: 0.00,
+        isInGeofence: false,
+        hasScannedQR: false,
+        isSuspended: false
+      };
+    } else {
+      state.workers[workerId].name = name;
+      state.workers[workerId].phone = phone;
+      state.workers[workerId].age = age;
+      state.workers[workerId].address = address;
+      state.workers[workerId].specialty = specialty;
+    }
+
+    saveSession(state.workers[workerId]);
+    document.getElementById("worker-login-gate").hidden = true;
+    renderConnectedState();
+    startCloudSync();
+    queueCloudSync(0);
+    notifyLocalChange("worker_registered", { worker: state.workers[workerId] });
+    showAlleviaToast(`Welcome, ${name}! Your shifts & wallet are ready.`);
+  });
+
+  // Switch Account
+  document.getElementById("btn-switch-account").addEventListener("click", () => {
+    if (!confirm("Sign out of this worker account on this device?")) return;
+    try { localStorage.removeItem(SESSION_KEY); } catch (e) {}
+    currentWorkerId = null;
+    document.getElementById("worker-login-gate").hidden = false;
+  });
+
+  // Profile Preferences Change
+  document.getElementById("prof-specialty").addEventListener("change", e => {
+    const w = getCurrentWorker();
+    if (w) { w.specialty = e.target.value; renderConnectedState(); queueCloudSync(100); }
+  });
+  document.getElementById("prof-experience").addEventListener("change", e => {
+    const w = getCurrentWorker();
+    if (w) { w.experience = parseInt(e.target.value); renderConnectedState(); queueCloudSync(100); }
+  });
+  document.getElementById("prof-license").addEventListener("input", e => {
+    const w = getCurrentWorker();
+    if (w) { w.licenseNumber = e.target.value; queueCloudSync(500); }
+  });
+
+  // Geofence & Checkin Listeners
+  document.getElementById("btn-simulate-gps-move").addEventListener("click", simulateGPSMovement);
+  document.getElementById("btn-trigger-qr").addEventListener("click", triggerQRScanner);
+  document.getElementById("btn-mobile-checkin").addEventListener("click", workerCheckIn);
+  document.getElementById("btn-mobile-checkout").addEventListener("click", workerCheckOut);
+
+  // Restore Session or show login
+  restoreSession();
+});
+  </script>
+</body>
+</html>

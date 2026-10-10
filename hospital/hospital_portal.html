@@ -1,0 +1,2637 @@
+<!DOCTYPE html>
+<html lang="en" data-api-origin="https://allevia-healthcare-staffing.huoucaocodthw.chatgpt.site">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#f0f4f9">
+  <title>Allevia | Healthcare Portal & Multi-Worker Management</title>
+  <meta name="description" content="Allevia Healthcare Facility Management Portal - Multi-worker applicant review, live monitoring, supervisor evaluation, and automated escrow payroll ledger.">
+  <style>
+/*
+ * Allevia CSS Design System
+ * Aesthetic: Light Gemini Theme (Gradient Blue/White, Translucent White Glass, Silver/White Phone Simulator)
+ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg-base: linear-gradient(135deg, #f0f4f9 0%, #e2eefa 55%, #f6f8fc 100%);
+  --bg-surface: rgba(255, 255, 255, 0.72);
+  --bg-surface-solid: #ffffff;
+  --bg-card: rgba(255, 255, 255, 0.65);
+  --bg-card-hover: rgba(255, 255, 255, 0.9);
+  --border-color: rgba(148, 163, 184, 0.18);
+  --border-glow: rgba(59, 130, 246, 0.12);
+  
+  --color-teal: hsl(175, 80%, 30%);
+  --color-teal-glow: rgba(13, 148, 136, 0.12);
+  --color-mint: hsl(142, 70%, 32%);
+  --color-mint-glow: rgba(16, 185, 129, 0.12);
+  --color-violet: hsl(226, 84%, 55%);
+  --color-violet-glow: rgba(59, 130, 246, 0.18);
+  --color-amber: hsl(28, 85%, 43%);
+  --color-amber-glow: rgba(217, 119, 6, 0.12);
+  --color-rose: hsl(350, 75%, 45%);
+  --color-rose-glow: rgba(225, 29, 72, 0.12);
+  
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --text-dark: #0f172a;
+  
+  --glass-blur: blur(16px);
+  --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --font-display: 'Outfit', sans-serif;
+  --font-sans: 'Inter', sans-serif;
+  
+  --shadow-neon: 0 8px 32px 0 rgba(148, 163, 184, 0.08), 0 0 15px rgba(59, 130, 246, 0.04);
+  --shadow-card: 0 4px 15px -3px rgba(148, 163, 184, 0.08), 0 2px 6px -2px rgba(148, 163, 184, 0.04);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-violet) rgba(255, 255, 255, 0.4);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.4); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--color-violet); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-teal); }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-attachment: fixed;
+}
+
+header {
+  padding: 1.25rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: var(--glass-blur);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(148, 163, 184, 0.03);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-violet), var(--color-teal));
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.25);
+  color: #fff;
+}
+
+.logo-icon svg { fill: currentColor; width: 26px; height: 26px; }
+.logo-mark-a { filter: drop-shadow(0 1px 3px rgba(255, 255, 255, 0.22)); }
+
+.logo-text h1 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+.logo-text span {
+  font-size: 0.7rem;
+  color: var(--color-violet);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: block;
+  margin-top: -2px;
+}
+
+.perspective-selector {
+  display: flex;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 4px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-card);
+}
+
+.perspective-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 8px 18px;
+  border-radius: 16px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+}
+
+.perspective-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+.perspective-btn.active {
+  background: linear-gradient(135deg, var(--color-violet), var(--color-violet-glow));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 1.5rem;
+  max-width: 1750px;
+  margin: 1.25rem auto;
+  padding: 0 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 1100px) {
+  .app-container { grid-template-columns: 1fr; }
+}
+
+.admin-dashboard, .integration-dashboard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 28px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-neon);
+  backdrop-filter: var(--glass-blur);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 800px;
+}
+
+.admin-section-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  border-left: 4px solid var(--color-violet);
+  padding-left: 10px;
+  margin-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-grid-top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.forecast-card, .post-request-card, .billing-ledger-card, .compliance-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.1rem;
+  box-shadow: var(--shadow-card);
+}
+
+.forecast-chart-container {
+  height: 120px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  padding-top: 15px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.forecast-bar-chart {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 85px;
+  padding: 0 10px;
+}
+
+.chart-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.chart-bar {
+  width: 20px;
+  background: linear-gradient(to top, var(--color-violet), var(--color-teal));
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  transition: height 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.15);
+  position: relative;
+}
+
+.chart-bar.alert {
+  background: linear-gradient(to top, var(--color-rose), var(--color-amber));
+  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.2);
+}
+
+.chart-bar-label { font-size: 0.6rem; color: var(--text-muted); margin-top: 6px; font-weight: 600; }
+.chart-bar-val {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.admin-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.admin-form-group { display: flex; flex-direction: column; gap: 4px; }
+.admin-form-group label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; }
+
+.admin-input, .admin-select {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  transition: var(--transition-smooth);
+}
+
+.admin-input:focus, .admin-select:focus {
+  outline: none;
+  border-color: var(--color-violet);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
+}
+
+.btn-admin-submit {
+  width: 100%;
+  background: linear-gradient(135deg, var(--color-violet), #4f46e5);
+  border: none;
+  color: #fff;
+  font-family: var(--font-display);
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  margin-top: 8px;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
+}
+
+.btn-admin-submit:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.25);
+}
+
+/* Candidate Review rows */
+.candidate-review-row {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-smooth);
+  margin-bottom: 8px;
+}
+
+.candidate-review-row:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.candidate-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.candidate-avatar {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--color-violet), var(--color-teal));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.candidate-name-info h4 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.candidate-name-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-violet);
+  font: 800 0.88rem/1.25 var(--font-display);
+  text-align: left;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: rgba(59, 130, 246, 0.28);
+  text-underline-offset: 3px;
+}
+
+.candidate-name-button:hover,
+.candidate-name-button:focus-visible {
+  color: var(--color-teal);
+  outline: none;
+}
+
+.candidate-stage-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--color-violet);
+  font-size: 0.63rem;
+  font-weight: 800;
+}
+
+.candidate-stage-badge.awaiting { background: rgba(245, 158, 11, 0.1); color: var(--color-amber); }
+.candidate-stage-badge.active { background: rgba(16, 185, 129, 0.1); color: var(--color-mint); }
+.candidate-stage-badge.paid { background: rgba(13, 148, 136, 0.1); color: var(--color-teal); }
+
+.candidate-name-info p { font-size: 0.7rem; color: var(--text-muted); }
+
+.review-sla-timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.review-sla-bar-outer {
+  width: 80px;
+  height: 4px;
+  background: rgba(148,163,184,0.12);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.review-sla-bar-inner {
+  height: 100%;
+  background: var(--color-amber);
+  border-radius: 3px;
+  transition: width 1s linear;
+}
+
+.review-sla-bar-inner.danger {
+  background: var(--color-rose);
+  animation: flashDanger 1s infinite alternate;
+}
+
+.review-sla-time-text {
+  font-size: 0.72rem;
+  font-family: monospace;
+  font-weight: bold;
+  color: var(--color-amber);
+}
+
+.review-sla-time-text.danger { color: var(--color-rose); }
+
+.score-badge {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--color-mint);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.review-actions-col {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-review-credentials,
+.btn-view-flowchart {
+  width: 100%;
+  border: 1px solid rgba(59, 130, 246, 0.24);
+  border-radius: 9px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-violet);
+  font-size: 0.73rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.btn-review-credentials:hover,
+.btn-view-flowchart:hover {
+  border-color: var(--color-violet);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.btn-approve {
+  flex: 1;
+  background: var(--color-mint);
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-approve:hover { filter: brightness(1.05); box-shadow: 0 2px 6px var(--color-mint-glow); }
+
+.btn-reject {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--color-rose);
+  color: var(--color-rose);
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-reject:hover { background: rgba(225, 29, 72, 0.04); }
+
+.evaluation-queue-card {
+  padding: 1.1rem;
+  border: 1px solid rgba(217, 119, 6, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.66);
+  box-shadow: var(--shadow-card);
+}
+
+.evaluation-queue-help {
+  margin: 7px 0 12px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+.queue-count-badge {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--color-amber);
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+
+.evaluation-queue-list { display: grid; gap: 9px; }
+
+.evaluation-empty-state {
+  padding: 18px 10px;
+  border: 1px dashed var(--border-color);
+  border-radius: 13px;
+  color: var(--text-muted);
+  font-size: 0.73rem;
+  text-align: center;
+}
+
+.evaluation-queue-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 13px;
+  background: #fff;
+}
+
+.evaluation-queue-row h4 { color: var(--text-dark); font: 800 0.83rem var(--font-display); }
+.evaluation-queue-row p { margin-top: 4px; color: var(--text-muted); font-size: 0.68rem; line-height: 1.4; }
+
+.btn-evaluate-worker {
+  border: 0;
+  border-radius: 9px;
+  padding: 9px 12px;
+  background: linear-gradient(135deg, var(--color-amber), #ea580c);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Monitoring Table */
+.monitoring-console {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1.1rem;
+  box-shadow: var(--shadow-card);
+}
+
+.active-shifts-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.active-shifts-table th, .active-shifts-table td {
+  text-align: left;
+  padding: 8px;
+  font-size: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.active-shifts-table th { color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+
+.badge-status {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-active { background: rgba(13, 148, 136, 0.08); color: var(--color-teal); border: 1px solid rgba(13, 148, 136, 0.18); }
+.status-checkedin { background: rgba(16, 185, 129, 0.08); color: var(--color-mint); border: 1px solid rgba(16, 185, 129, 0.18); }
+.status-pending { background: rgba(217, 119, 6, 0.08); color: var(--color-amber); border: 1px solid rgba(217, 119, 6, 0.18); }
+.status-completed { background: rgba(148, 163, 184, 0.08); color: var(--text-muted); border: 1px solid rgba(148, 163, 184, 0.15); }
+
+/* Billing ledger boxes */
+.ledger-summary-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ledger-box {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: var(--shadow-card);
+}
+
+.ledger-box span { font-size: 0.65rem; color: var(--text-muted); display: block; }
+.ledger-box strong { font-family: var(--font-display); font-size: 0.95rem; font-weight: 800; color: var(--text-dark); }
+.ledger-box.active-cost strong { color: var(--color-violet); }
+.ledger-box.paid-out strong { color: var(--color-mint); }
+
+/* Compliance & Flowchart Panels */
+.compliance-box { display: flex; flex-direction: column; gap: 10px; }
+.compliance-status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 0.72rem;
+  box-shadow: var(--shadow-card);
+}
+
+.compliance-status-row strong { color: var(--text-dark); }
+
+.timeline-audit-log {
+  height: 100px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.65rem;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 8px;
+  line-height: 1.4;
+  color: var(--text-main);
+}
+
+.timeline-line { border-left: 2px solid var(--color-violet); padding-left: 6px; margin-bottom: 4px; }
+.timeline-line.success { border-left-color: var(--color-mint); }
+.timeline-line.warning { border-left-color: var(--color-amber); }
+.timeline-line.danger { border-left-color: var(--color-rose); }
+
+.bank-sync-visual {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 8px 0;
+  margin: 8px 0;
+}
+
+.bank-sync-visual::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  background: rgba(148, 163, 184, 0.15);
+  z-index: 1;
+}
+
+.bank-node {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--border-color);
+  z-index: 2;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+}
+
+.bank-node.active {
+  border-color: var(--color-mint);
+  background: var(--color-mint);
+  box-shadow: 0 0 8px var(--color-mint-glow);
+}
+
+.bank-node.active svg { fill: #fff; width: 10px; height: 10px; }
+
+.bank-node-label {
+  position: absolute;
+  top: 24px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bank-node.active .bank-node-label { color: var(--text-dark); }
+
+.policy-card-item {
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow-card);
+}
+
+.policy-meta h5 { font-size: 0.72rem; font-weight: 700; color: var(--text-dark); }
+.policy-meta p { font-size: 0.65rem; color: var(--text-muted); }
+
+.btn-policy-trigger {
+  background: rgba(225, 29, 72, 0.05);
+  border: 1px solid rgba(225, 29, 72, 0.15);
+  color: var(--color-rose);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-policy-trigger:hover { background: var(--color-rose); color: #fff; }
+
+.system-event-logs {
+  grid-column: 1 / -1;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: var(--shadow-neon);
+}
+
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 6px;
+}
+
+.terminal-title {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: var(--color-violet);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.terminal-status-light {
+  width: 6px;
+  height: 6px;
+  background: var(--color-mint);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--color-mint);
+}
+
+.terminal-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: monospace;
+  font-size: 0.65rem;
+  cursor: pointer;
+}
+
+.terminal-clear-btn:hover { color: var(--color-rose); }
+
+.terminal-body {
+  height: 110px;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.7rem;
+  line-height: 1.4;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-line { display: flex; gap: 8px; }
+.log-time { color: var(--color-violet); }
+.log-tag { font-weight: bold; }
+.log-msg { color: #0f172a; }
+.log-tag.system { color: var(--color-teal); }
+.log-tag.matching { color: var(--color-violet); }
+.log-tag.sla { color: var(--color-amber); }
+.log-tag.verification { color: var(--color-mint); }
+.log-tag.incident { color: var(--color-rose); }
+
+/* Modals */
+.rating-modal-overlay, .detail-modal-overlay {
+  position: fixed;
+  inset: 0;
+  padding: 18px;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(8px);
+  z-index: 4700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: var(--transition-smooth);
+}
+
+.rating-modal-overlay.active, .detail-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.rating-modal, .detail-modal {
+  background: #ffffff;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 24px;
+  padding: 2rem;
+  width: 540px;
+  max-width: 90%;
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  box-shadow: 0 20px 50px rgba(148,163,184,0.3);
+  position: relative;
+}
+
+.rating-modal { text-align: center; }
+
+.modal-close-btn, .flowchart-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text-muted);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+
+.modal-close-btn:hover, .flowchart-close-btn:hover {
+  color: var(--color-rose);
+  border-color: rgba(225, 29, 72, 0.25);
+}
+
+.modal-eyebrow {
+  margin: 0 0 5px;
+  color: var(--color-violet);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.credential-modal-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-right: 38px;
+}
+
+.credential-avatar { width: 54px; height: 54px; border-radius: 15px; font-size: 1.3rem; }
+.credential-modal-heading h3 { color: var(--text-dark); font: 800 1.22rem var(--font-display); }
+.credential-modal-heading p:last-child { margin-top: 4px; color: var(--text-muted); font-size: 0.76rem; }
+
+.credential-metric-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.credential-metric-grid > div {
+  padding: 11px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 0.86);
+}
+
+.credential-metric-grid span { display: block; color: var(--text-muted); font-size: 0.65rem; }
+.credential-metric-grid strong { display: block; margin-top: 4px; color: var(--text-dark); font: 800 0.87rem var(--font-display); }
+
+.credential-status-card {
+  padding: 15px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 16px;
+  background: rgba(16, 185, 129, 0.035);
+}
+
+.credential-status-card h4 { margin-bottom: 10px; color: var(--text-dark); font: 800 0.92rem var(--font-display); }
+
+.credential-status-row, .credential-license-number {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-main);
+  font-size: 0.75rem;
+}
+
+.credential-license-number { border-bottom: 0; }
+.credential-license-number strong { color: var(--text-dark); font-family: monospace; }
+
+.credential-decision-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.rating-stars { display: flex; justify-content: center; gap: 8px; margin: 1.5rem 0; }
+.star {
+  border: 0;
+  background: transparent;
+  min-width: 40px;
+  min-height: 44px;
+  font-size: 1.8rem;
+  color: rgba(148,163,184,0.25);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.star.active, .star:hover { color: var(--color-amber); text-shadow: 0 0 6px var(--color-amber-glow); }
+
+/* Role Gate & Header */
+.role-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: var(--bg-base);
+}
+
+body[data-role] .role-gate { display: none; }
+body:not([data-role]) > header,
+body:not([data-role]) > main,
+body:not([data-role]) > .rating-modal-overlay,
+body:not([data-role]) > .detail-modal-overlay,
+body:not([data-role]) > .allevia-toast {
+  display: none;
+}
+
+.role-gate-card {
+  width: min(100%, 600px);
+  padding: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 30px 80px rgba(51, 65, 85, 0.16);
+  backdrop-filter: blur(22px);
+}
+
+.role-brand { display: flex; align-items: center; gap: 15px; margin-bottom: 24px; }
+.role-brand .logo-icon { width: 54px; height: 54px; border-radius: 17px; }
+.role-brand .logo-icon svg { width: 34px; height: 34px; }
+.role-brand h1 { margin: 0; color: var(--text-dark); font: 800 1.8rem/1.1 var(--font-display); }
+.role-brand p { margin: 6px 0 0; color: var(--text-muted); font-size: 0.9rem; }
+
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--color-mint);
+  box-shadow: 0 0 0 4px var(--color-mint-glow);
+  flex: 0 0 auto;
+}
+.cloud-state.offline .sync-dot { background: var(--color-amber); }
+.cloud-state.error .sync-dot { background: var(--color-rose); }
+
+.role-session { align-items: center; gap: 10px; display: flex; }
+.cloud-state { display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.72rem; font-weight: 600; }
+.logout-btn {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.86);
+  color: var(--text-main);
+  padding: 8px 12px;
+  font: 700 0.75rem var(--font-sans);
+  cursor: pointer;
+}
+
+.allevia-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 4500;
+  width: min(calc(100% - 28px), 440px);
+  padding: 13px 16px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 15px;
+  background: rgba(15, 23, 42, 0.94);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.24);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 18px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+.allevia-toast.active { opacity: 1; transform: translate(-50%, 0); }
+.badge-verified { background: rgba(16, 185, 129, 0.08); color: var(--color-mint); border: 1px solid rgba(16, 185, 129, 0.18); padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.6rem; text-transform: uppercase; }
+.badge-pending { background: rgba(217, 119, 6, 0.08); color: var(--color-amber); border: 1px solid rgba(217, 119, 6, 0.18); padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.6rem; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+  <!-- Facility Access Gate -->
+  <section class="role-gate" id="role-gate">
+    <div class="role-gate-card">
+      <div class="role-brand">
+        <div class="logo-icon" aria-hidden="true">
+          <svg class="logo-mark-a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+            <path d="M32 7 8 57h12l4.8-10.8h14.4L44 57h12L32 7Zm-3.6 29.6L32 27.8l3.6 8.8h-7.2Z"/>
+            <path d="M24 42h5l3-6 3 6h5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div>
+          <h1>Allevia Healthcare Portal</h1>
+          <p>Sign in with your facility code to manage staffing & applicants.</p>
+        </div>
+      </div>
+
+      <form id="healthcare-login-form">
+        <div class="admin-form-group" style="margin-bottom: 14px;">
+          <label for="healthcare-code">Facility Number Code</label>
+          <input id="healthcare-code" class="admin-input" inputmode="numeric" pattern="[0-9]+" value="0001" required placeholder="Enter facility code (0001, 002, 003, 004, 101, 201)">
+          <small style="color:var(--text-muted); font-size:0.7rem; margin-top:4px;">
+            Demo codes: <strong>0001</strong> (St. Mary's General), <strong>002</strong> (Tiara's), <strong>003</strong> (Yuki's), <strong>004</strong> (Daniel's), <strong>101</strong> (Happy Homecare), <strong>201</strong> (Smile Nursingcare)
+          </small>
+        </div>
+        <button class="btn-admin-submit" type="submit" style="padding: 12px; font-size: 0.95rem;">
+          Enter Facility Workspace →
+        </button>
+        <p id="healthcare-code-error" style="display:none; color:#dc2626; font-size:0.75rem; font-weight:700; margin-top:8px;">Code not recognized.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Web App Header -->
+  <header>
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg class="logo-mark-a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="Allevia symbolic letter A" role="img">
+          <path d="M32 7 8 57h12l4.8-10.8h14.4L44 57h12L32 7Zm-3.6 29.6L32 27.8l3.6 8.8h-7.2Z"/>
+          <path d="M24 42h5l3-6 3 6h5" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <h1>Allevia</h1>
+        <span>Healthcare Staffing Ecosystem • Multi-Worker Management</span>
+      </div>
+    </div>
+
+    <div class="role-session" id="role-session">
+      <span class="cloud-state" id="cloud-state"><span class="sync-dot" aria-hidden="true"></span><span id="cloud-state-text">Live sync on</span></span>
+      <button class="logout-btn" id="clear-demo-data" type="button">Clear Demo Data</button>
+      <button class="logout-btn" id="logout-role" type="button">Switch Facility</button>
+    </div>
+  </header>
+
+  <!-- Main 2-Column Responsive Layout -->
+  <main class="app-container">
+
+    <!-- COLUMN 1: HOSPITAL OPERATIONS & APPLICANTS HUB -->
+    <section class="admin-dashboard" id="hospital-admin-panel">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+        <div>
+          <h2 id="healthcare-facility-name" style="font-family:var(--font-display); font-size:1.45rem; font-weight:800; color:var(--text-dark);">St. Mary's General</h2>
+          <span id="healthcare-facility-type" style="font-size:0.7rem; color:var(--color-teal); font-weight:600; text-transform:uppercase;">Hospital Admin Console • Code 0001</span>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.72rem; color:var(--text-muted);">Active Staff: <strong style="color:var(--color-mint);" id="hospital-active-staff-count">0</strong></div>
+          <div style="font-size:0.72rem; color:var(--text-muted);">Registered Workers: <strong style="color:var(--color-violet);" id="hospital-registered-workers-count">0</strong></div>
+        </div>
+      </div>
+
+      <!-- Forecaster & Request builder -->
+      <div class="admin-grid-top">
+        
+        <!-- Forecasting Panel -->
+        <div class="forecast-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 style="font-size:0.85rem; font-family:var(--font-display); font-weight:700; color:var(--text-dark);">Shortage Forecasting</h3>
+            <span class="badge-pending" id="shortage-forecast-indicator">Normal Demand</span>
+          </div>
+          <p style="font-size:0.68rem; color:var(--text-muted); margin-bottom:10px;">
+            Analyzes schedules to pinpoint staffing deficits. Drag slider to simulate dynamic shortages.
+          </p>
+          
+          <div class="forecast-chart-container">
+            <div class="forecast-bar-chart" id="forecast-bars-row">
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" style="height: 45%;" id="bar-peds"><span class="chart-bar-val">45%</span></div>
+                <span class="chart-bar-label">Peds</span>
+              </div>
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" style="height: 30%;" id="bar-er"><span class="chart-bar-val">30%</span></div>
+                <span class="chart-bar-label">ER</span>
+              </div>
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" style="height: 15%;" id="bar-icu"><span class="chart-bar-val">15%</span></div>
+                <span class="chart-bar-label">ICU</span>
+              </div>
+              <div class="chart-bar-wrapper">
+                <div class="chart-bar" style="height: 25%;" id="bar-pharmacy"><span class="chart-bar-val">25%</span></div>
+                <span class="chart-bar-label">Pharm</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+            <label for="forecast-slider" style="font-size:0.68rem; color:var(--text-muted); font-weight:600;">Simulate Seasonality:</label>
+            <input type="range" id="forecast-slider" min="1" max="3" value="1" style="flex:1; accent-color:var(--color-violet);">
+          </div>
+        </div>
+
+        <!-- Post Shift Builder -->
+        <div class="post-request-card">
+          <h3 style="font-size:0.85rem; font-family:var(--font-display); font-weight:700; color:var(--text-dark); margin-bottom:8px;">Post Staffing Request (Open to all Workers)</h3>
+          
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="req-dept">Department</label>
+              <select id="req-dept" class="admin-select">
+                <option value="Pediatric Ward">Pediatric Ward</option>
+                <option value="Emergency Room">Emergency Room</option>
+                <option value="Obstetrics & Gynecology">Obstetrics / Midwifery</option>
+                <option value="Intensive Care Unit">Intensive Care Unit</option>
+                <option value="Pharmacy Lab">Pharmacy Lab</option>
+                <option value="Home Care">Home Care</option>
+                <option value="Nursing Care">Nursing Care</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="req-position">Required Role</label>
+              <select id="req-position" class="admin-select">
+                <option value="Pediatric Nurse">Pediatric Nurse</option>
+                <option value="ER Technician">ER Technician</option>
+                <option value="Midwife">Certified Midwife</option>
+                <option value="ICU Nurse">ICU Nurse</option>
+                <option value="Pharmacist">Clinical Pharmacist</option>
+                <option value="Home Care Nurse">Home Care Nurse</option>
+                <option value="Geriatric Nurse">Geriatric Nurse</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="req-experience">Min Experience</label>
+              <select id="req-experience" class="admin-select">
+                <option value="1">1+ Year</option>
+                <option value="3">3+ Years</option>
+                <option value="5" selected>5+ Years</option>
+                <option value="8">8+ Years</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="req-wage">Hourly Wage ($)</label>
+              <input type="number" id="req-wage" class="admin-input" value="65" min="20">
+            </div>
+          </div>
+
+          <div class="admin-form-row">
+            <div class="admin-form-group">
+              <label for="req-gender">Gender Pref.</label>
+              <select id="req-gender" class="admin-select">
+                <option value="No Preference">No Preference</option>
+                <option value="Female Only">Female Required</option>
+                <option value="Male Only">Male Required</option>
+              </select>
+            </div>
+            <div class="admin-form-group">
+              <label for="req-schedule">Schedule Start</label>
+              <select id="req-schedule" class="admin-select">
+                <option value="Tomorrow Day Shift">Tomorrow (08:00 - 16:00)</option>
+                <option value="Tomorrow Night Shift">Tomorrow (20:00 - 04:00)</option>
+                <option value="Weekend Day Shift">Weekend Shift (08:00 - 20:00)</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btn-publish-shift" class="btn-admin-submit">Publish Shift to Marketplace</button>
+        </div>
+
+      </div>
+
+      <!-- Applicant SLA Review Board -->
+      <div>
+        <div class="admin-section-title">
+          Applicant Approval Hub
+          <span style="font-size:0.68rem; color:var(--text-muted); font-weight:normal;" id="applicants-count-badge">0 applications</span>
+        </div>
+        
+        <div id="candidate-board-container" class="sla-board-grid" style="margin-top:8px;">
+          <div id="no-applicants-state" style="text-align:center; padding:24px 10px; background:#ffffff; border-radius:16px; border: 1px dashed var(--border-color); color:var(--text-muted); font-size:0.75rem;">
+            No applications pending review. When workers apply on their phones, their credentials will appear here for review!
+          </div>
+        </div>
+      </div>
+
+      <!-- Supervisor Evaluation & Payment Release -->
+      <div class="evaluation-queue-card">
+        <div class="admin-section-title" style="border-left-color:var(--color-amber);">
+          Supervisor Evaluation & Payment Release
+          <span class="queue-count-badge" id="evaluation-queue-count">0 pending</span>
+        </div>
+        <p class="evaluation-queue-help">Completed shifts requiring supervisor feedback. Submitting evaluation releases payment directly into that specific worker's wallet.</p>
+        <div id="hospital-evaluation-queue" class="evaluation-queue-list">
+          <div id="no-evaluations-state" class="evaluation-empty-state">No completed shifts are waiting for evaluation.</div>
+        </div>
+      </div>
+
+      <!-- Live Shift Operations Console -->
+      <div class="monitoring-console">
+        <h3 style="font-size:0.85rem; font-family:var(--font-display); font-weight:700; color:var(--text-dark); margin-bottom:4px;">Live Shift Operations (Roster)</h3>
+        <p style="font-size:0.68rem; color:var(--text-muted); margin-bottom:8px;">
+          Real-time tracking of staff on duty across hospital wings.
+        </p>
+
+        <div style="overflow-x:auto;">
+          <table class="active-shifts-table">
+            <thead>
+              <tr>
+                <th>Worker</th>
+                <th>Role & Dept</th>
+                <th>Status</th>
+                <th>In</th>
+                <th>Out</th>
+                <th>Reconciliation</th>
+              </tr>
+            </thead>
+            <tbody id="hospital-monitoring-table-body">
+              <tr id="empty-monitoring-row">
+                <td colspan="6" style="text-align:center; color:var(--text-muted); padding:16px;">No active workers logged.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Financial Ledger -->
+      <div class="billing-ledger-card">
+        <h3 style="font-size:0.85rem; font-family:var(--font-display); font-weight:700; color:var(--text-dark); margin-bottom:8px;">Facility Financial Ledger</h3>
+        
+        <div class="ledger-summary-row">
+          <div class="ledger-box active-cost">
+            <span>Estimated Cost</span>
+            <strong id="ledger-est-cost">$0.00</strong>
+          </div>
+          <div class="ledger-box">
+            <span>Platform Fee (15%)</span>
+            <strong id="ledger-commission-cost">$0.00</strong>
+          </div>
+          <div class="ledger-box">
+            <span>Gross Wages Payout</span>
+            <strong id="ledger-worker-gross">$0.00</strong>
+          </div>
+          <div class="ledger-box paid-out">
+            <span>Settled Ledger</span>
+            <strong id="ledger-settled-cost">$0.00</strong>
+          </div>
+        </div>
+        <div style="font-size:0.62rem; color:var(--text-muted); display:flex; justify-content:space-between; align-items:center;">
+          <span>* Automatic escrow release upon supervisor shift sign-off.</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- COLUMN 2: FLOWCHART ECOSYSTEM INTEGRATION CONSOLE -->
+    <section class="integration-dashboard" id="integrations-portal">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; padding-bottom:12px; border-bottom:1px solid var(--border-color);">
+        <div>
+          <h2 style="font-family:var(--font-display); font-size:1.45rem; font-weight:800; color:var(--text-dark);">Flowchart Integrations</h2>
+          <span style="font-size:0.7rem; color:var(--color-violet); font-weight:600; text-transform:uppercase;">Connected Systems & Compliance Gates</span>
+          <p id="flowchart-worker-context" style="margin-top:7px; color:var(--text-muted); font-size:0.75rem; line-height:1.4;">
+            Select an approved worker or shift to inspect the connected workflow.
+          </p>
+        </div>
+      </div>
+
+      <!-- Regulatory & KYC checks -->
+      <div class="compliance-box">
+        <div class="admin-section-title" style="border-left-color: var(--color-teal); font-size:0.85rem;">
+          Regulatory Authority & Auditing
+        </div>
+        <div class="compliance-status-row">
+          <span>Board License Verification:</span>
+          <strong id="reg-license-status" style="color:var(--color-mint);">ACTIVE & CLEAN</strong>
+        </div>
+        <div class="compliance-status-row">
+          <span>Identity Verification (KYC):</span>
+          <strong id="reg-kyc-status" style="color:var(--color-mint);">PASSED</strong>
+        </div>
+        <div class="timeline-audit-log" id="reg-audit-terminal">
+          <div class="timeline-line success">[SYSTEM] Hospital Compliance synchronizer active.</div>
+        </div>
+      </div>
+
+      <!-- Stripe escrow & bank sync -->
+      <div class="compliance-box">
+        <div class="admin-section-title" style="border-left-color: var(--color-mint); font-size:0.85rem;">
+          Bank & Stripe Wallet Gateway
+        </div>
+        <div class="bank-sync-visual">
+          <div class="bank-node active" id="node-escrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            <div class="bank-node-label">1. Hold Escrow</div>
+          </div>
+          <div class="bank-node" id="node-stripe">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            <div class="bank-node-label">2. Stripe Transit</div>
+          </div>
+          <div class="bank-node" id="node-disburse">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+            <div class="bank-node-label">3. Settled</div>
+          </div>
+        </div>
+        <div class="compliance-status-row" style="margin-top:10px;">
+          <span>Stripe Transfer Status:</span>
+          <strong style="color:var(--text-muted);" id="bank-gateway-status">IDLE / ESCROW UNLOCKED</strong>
+        </div>
+      </div>
+
+      <!-- Oracle / SAP ERP sync -->
+      <div class="compliance-box">
+        <div class="admin-section-title" style="border-left-color: var(--color-violet); font-size:0.85rem;">
+          Hospital ERP Accounting Ledger
+        </div>
+        <div class="compliance-status-row">
+          <span>ERP Ledger Status:</span>
+          <strong id="erp-sync-status" style="color:var(--text-muted);">IDLE (NO ACTIVE SHIFT)</strong>
+        </div>
+        <div class="timeline-audit-log" id="erp-audit-terminal">
+          <div class="timeline-line">[ERP] Synchronizer initialized. Listening for invoice triggers...</div>
+        </div>
+      </div>
+
+      <!-- Liability Insurance -->
+      <div class="compliance-box">
+        <div class="admin-section-title" style="border-left-color: var(--color-amber); font-size:0.85rem;">
+          Liability Insurance (PLI Claims)
+        </div>
+        <div class="compliance-status-row">
+          <span>Active Accident Policy:</span>
+          <strong style="color:var(--color-mint);" id="insurance-accident-status">ACTIVE & BOUND</strong>
+        </div>
+      </div>
+
+      <!-- Operations Policies & Incident Simulator -->
+      <div class="compliance-box" style="border: 1px solid rgba(225, 29, 72, 0.2); background: rgba(225, 29, 72, 0.02); border-radius:18px; padding:12px;">
+        <div class="admin-section-title" style="border-left-color: var(--color-rose); font-size:0.85rem; color:var(--color-rose);">
+          Operations Policies & Incident Simulator
+        </div>
+        <p style="font-size:0.68rem; color:var(--text-muted); margin-bottom:8px;">
+          Simulate incidents on the currently selected candidate:
+        </p>
+        
+        <div class="policy-card-item">
+          <div class="policy-meta">
+            <h5>Late Arrival Penalty</h5>
+            <p>Deducts 5% Reliability Score</p>
+          </div>
+          <button class="btn-policy-trigger" id="btn-trigger-late-arrival">Trigger</button>
+        </div>
+
+        <div class="policy-card-item">
+          <div class="policy-meta">
+            <h5>Shift Cancellation Penalty</h5>
+            <p>Drops rating star by 0.2</p>
+          </div>
+          <button class="btn-policy-trigger" id="btn-trigger-cancellation">Trigger</button>
+        </div>
+
+        <div class="policy-card-item">
+          <div class="policy-meta">
+            <h5>No-Show Incident</h5>
+            <p>Suspends license & KYC checks</p>
+          </div>
+          <button class="btn-policy-trigger" id="btn-trigger-noshow">Trigger Alert</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SYSTEM TELEMETRY TERMINAL -->
+    <section class="system-event-logs">
+      <div class="terminal-header">
+        <div class="terminal-title">
+          <div class="terminal-status-light"></div>
+          ALLEVIA SYSTEM TELEMETRY TERMINAL [Multi-Worker & Cloud-Sync Engine]
+        </div>
+        <button id="btn-clear-terminal" class="terminal-clear-btn">CLEAR TELEMETRY</button>
+      </div>
+      <div class="terminal-body" id="terminal-logs-container">
+        <div class="log-line">
+          <span class="log-time">[INIT]</span>
+          <span class="log-tag system">[SYSTEM]</span>
+          <span class="log-msg">Allevia Hospital Portal online. Multi-worker support active.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Credential Review Modal -->
+  <div class="detail-modal-overlay" id="credential-modal-screen" aria-hidden="true">
+    <div class="detail-modal" role="dialog" aria-modal="true" aria-labelledby="credential-modal-title">
+      <button class="modal-close-btn" id="btn-close-credential" type="button" aria-label="Close credential review">×</button>
+      <div class="credential-modal-heading">
+        <div class="candidate-avatar credential-avatar" id="credential-worker-avatar">EV</div>
+        <div>
+          <p class="modal-eyebrow">Applicant Profile</p>
+          <h3 id="credential-modal-title">Emma Vance, RN</h3>
+          <p id="credential-shift-summary">Pediatric Nurse • Pediatric Ward</p>
+        </div>
+      </div>
+
+      <div class="credential-metric-grid">
+        <div><span>Reliability</span><strong id="credential-reliability">99.2%</strong></div>
+        <div><span>Reputation</span><strong id="credential-rating">4.9 ★</strong></div>
+        <div><span>Experience</span><strong id="credential-experience">5 years</strong></div>
+      </div>
+
+      <div class="credential-status-card">
+        <h4>Credential Verification Status</h4>
+        <div class="credential-status-row"><span>ID & Biometrics (KYC)</span><strong class="badge-verified" id="credential-kyc-status">Verified</strong></div>
+        <div class="credential-status-row"><span>Nursing Degree</span><strong class="badge-verified" id="credential-degree-status">Verified</strong></div>
+        <div class="credential-status-row"><span>State Board License</span><strong class="badge-verified" id="credential-license-status">Verified</strong></div>
+        <div class="credential-license-number"><span>Practice license</span><strong id="credential-license-number">RN-948201-US</strong></div>
+      </div>
+
+      <div class="credential-decision-actions">
+        <button class="btn-reject" id="credential-reject-btn" type="button">Reject Application</button>
+        <button class="btn-approve" id="credential-approve-btn" type="button">Approve Worker</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Supervisor Evaluation Modal -->
+  <div class="rating-modal-overlay" id="ratings-modal-screen" aria-hidden="true">
+    <div class="rating-modal" role="dialog" aria-modal="true" aria-labelledby="rating-modal-title">
+      <button class="modal-close-btn" id="btn-close-rating" type="button" aria-label="Close evaluation">×</button>
+      <p class="modal-eyebrow">Hospital Supervisor Action</p>
+      <h3 style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:var(--text-dark);" id="rating-modal-title">Evaluate Worker Performance</h3>
+      <p style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;" id="rating-modal-subtitle">Rate the completed shift. Submitting releases funds to the worker's wallet.</p>
+      
+      <div class="rating-stars" id="star-container">
+        <button class="star active" type="button" data-value="1">★</button>
+        <button class="star active" type="button" data-value="2">★</button>
+        <button class="star active" type="button" data-value="3">★</button>
+        <button class="star active" type="button" data-value="4">★</button>
+        <button class="star active" type="button" data-value="5">★</button>
+      </div>
+
+      <div class="admin-form-group" style="text-align:left; margin-bottom:12px;">
+        <label for="rating-review-text">Supervisor Review & Notes</label>
+        <textarea id="rating-review-text" class="admin-input" style="height:60px; resize:none;" placeholder="Great communication and punctual execution..."></textarea>
+      </div>
+
+      <button id="btn-submit-rating" class="btn-admin-submit">
+        Confirm Evaluation & Disburse Payment
+      </button>
+    </div>
+  </div>
+
+  <div class="allevia-toast" id="allevia-toast" role="status" aria-live="polite"></div>
+
+  <!-- Javascript Engine -->
+  <script>
+/**
+ * Allevia Hospital Portal Engine - Multi-Worker Architecture (dataVersion: 4)
+ */
+
+let state = {
+  dataVersion: 4,
+  workers: {
+    "wk_emma": {
+      id: "wk_emma",
+      name: "Emma Vance, RN",
+      initials: "EV",
+      phone: "555-0199",
+      age: 28,
+      address: "123 Medical Center Blvd",
+      specialty: "Pediatric Nurse",
+      experience: 5,
+      licenseNumber: "RN-948201-US",
+      licenseVerified: true,
+      reliabilityScore: 99.2,
+      ratingScore: 4.9,
+      ratingCount: 0,
+      ratingTotal: 0,
+      walletBalance: 0.00,
+      isInGeofence: false,
+      hasScannedQR: false,
+      isSuspended: false
+    }
+  },
+  shifts: [
+    { id: "sh-001", facilityCode: "0001", hospitalName: "St. Mary's General", department: "Pediatric Ward", positionNeeded: "Pediatric Nurse", experienceRequired: 5, hourlyWage: 65.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 140 },
+    { id: "sh-002", facilityCode: "002", hospitalName: "Tiara's Hospital", department: "Maternity Ward", positionNeeded: "Midwife", experienceRequired: 3, hourlyWage: 68.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 260 },
+    { id: "sh-003", facilityCode: "003", hospitalName: "Yuki's Hospital", department: "Intensive Care Unit", positionNeeded: "ICU Nurse", experienceRequired: 5, hourlyWage: 82.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 12, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 380 },
+    { id: "sh-004", facilityCode: "004", hospitalName: "Daniel's Hospital", department: "Pharmacy", positionNeeded: "Pharmacist", experienceRequired: 3, hourlyWage: 74.00, genderPreference: "No Preference", schedule: "Weekend Day Shift", durationHours: 10, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 520 },
+    { id: "sh-005", facilityCode: "101", hospitalName: "Happy Homecare", department: "Home Care", positionNeeded: "Home Care Nurse", experienceRequired: 2, hourlyWage: 55.00, genderPreference: "No Preference", schedule: "Tomorrow Day Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 170 },
+    { id: "sh-006", facilityCode: "201", hospitalName: "Smile Nursingcare", department: "Nursing Care", positionNeeded: "Geriatric Nurse", experienceRequired: 3, hourlyWage: 59.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 210 },
+    { id: "sh-007", facilityCode: "002", hospitalName: "Tiara's Hospital", department: "Pediatric Ward", positionNeeded: "Pediatric Nurse", experienceRequired: 4, hourlyWage: 70.00, genderPreference: "No Preference", schedule: "Tomorrow Night Shift", durationHours: 8, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 275 },
+    { id: "sh-008", facilityCode: "004", hospitalName: "Daniel's Hospital", department: "Intensive Care Unit", positionNeeded: "ICU Nurse", experienceRequired: 4, hourlyWage: 79.00, genderPreference: "No Preference", schedule: "Weekend Day Shift", durationHours: 12, status: "Open", assignedWorkerId: null, applicants: [], distanceMeters: 505 }
+  ],
+  billingLedger: { estimatedCosts: 0.00, commissions: 0.00, grossWages: 0.00, settledPayouts: 0.00 },
+  activeIntervals: {},
+  currentSeasonality: 1
+};
+
+const healthcareFacilities = Object.freeze({
+  "0001": { code: "0001", name: "St. Mary's General", type: "Hospital" },
+  "002": { code: "002", name: "Tiara's Hospital", type: "Hospital" },
+  "003": { code: "003", name: "Yuki's Hospital", type: "Hospital" },
+  "004": { code: "004", name: "Daniel's Hospital", type: "Hospital" },
+  "101": { code: "101", name: "Happy Homecare", type: "Homecare" },
+  "201": { code: "201", name: "Smile Nursingcare", type: "Nursing care" }
+});
+
+let currentHealthcareFacility = healthcareFacilities["0001"];
+let selectedShiftId = null;
+let selectedWorkerId = null;
+let currentRatingScore = 5;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function getHealthcareFacilityShifts() {
+  if (!currentHealthcareFacility) return [];
+  return state.shifts.filter(shift => shift.facilityCode === currentHealthcareFacility.code);
+}
+
+function normalizeStateShape(targetState) {
+  if (!targetState) return targetState;
+  targetState.dataVersion = 4;
+  if (!targetState.workers || typeof targetState.workers !== "object") {
+    targetState.workers = {};
+  }
+  if (targetState.workerProfile && typeof targetState.workerProfile === "object") {
+    const legacyId = targetState.workerProfile.id || "wk_emma";
+    if (!targetState.workers[legacyId]) {
+      targetState.workers[legacyId] = Object.assign({}, targetState.workerProfile, { id: legacyId });
+    }
+  }
+  if (Object.keys(targetState.workers).length === 0) {
+    targetState.workers["wk_emma"] = {
+      id: "wk_emma",
+      name: "Emma Vance, RN",
+      initials: "EV",
+      phone: "555-0199",
+      age: 28,
+      address: "123 Medical Center Blvd",
+      specialty: "Pediatric Nurse",
+      experience: 5,
+      licenseNumber: "RN-948201-US",
+      licenseVerified: true,
+      reliabilityScore: 99.2,
+      ratingScore: 4.9,
+      ratingCount: 0,
+      ratingTotal: 0,
+      walletBalance: 0.00,
+      isInGeofence: false,
+      hasScannedQR: false,
+      isSuspended: false
+    };
+  }
+  for (const id in targetState.workers) {
+    const w = targetState.workers[id];
+    w.id = id;
+    w.name = w.name || "Healthcare Professional";
+    if (!w.initials) {
+      w.initials = w.name.replace(/,.*$/, "").trim().split(/\s+/).slice(0, 2).map(p => p[0]).join("").toUpperCase() || "HP";
+    }
+    w.reliabilityScore = Number(w.reliabilityScore) || 99.0;
+    w.ratingScore = Number(w.ratingScore) || 5.0;
+    w.ratingCount = Number(w.ratingCount) || 0;
+    w.ratingTotal = Number(w.ratingTotal) || (w.ratingScore * w.ratingCount);
+    w.walletBalance = Number(w.walletBalance) || 0;
+    w.licenseVerified = w.licenseVerified !== false;
+    w.isSuspended = !!w.isSuspended;
+  }
+  if (Array.isArray(targetState.shifts)) {
+    targetState.shifts.forEach(shift => {
+      if (!shift.facilityCode) shift.facilityCode = shift.hospitalName === "St. Mary's General" ? "0001" : "legacy";
+      if (!Array.isArray(shift.applicants)) shift.applicants = [];
+      const gross = Number(shift.hourlyWage || 0) * Number(shift.durationHours || 0);
+
+      // Backward compatibility: If an old shift had Applied status but empty applicants
+      if (shift.applicants.length === 0 && (shift.status === "Applied" || shift.status === "Approved" || shift.status === "Active" || shift.status === "Awaiting Evaluation" || shift.status === "Completed")) {
+        const wId = shift.assignedWorkerId || Object.keys(targetState.workers)[0] || "wk_emma";
+        const w = targetState.workers[wId] || {};
+        shift.applicants.push({
+          workerId: wId,
+          workerName: w.name || "Emma Vance, RN",
+          workerInitials: w.initials || "EV",
+          specialty: w.specialty || shift.positionNeeded,
+          experience: w.experience || shift.experienceRequired,
+          licenseNumber: w.licenseNumber || "RN-948201-US",
+          licenseVerified: w.licenseVerified !== false,
+          reliabilityScore: w.reliabilityScore || 99.2,
+          ratingScore: w.ratingScore || 4.9,
+          status: shift.status,
+          appliedAt: Date.now(),
+          slaExpiresAt: shift.slaExpiresAt || (Date.now() + 12 * 3600 * 1000),
+          credentialReviewedAt: shift.credentialReviewedAt || (shift.status !== "Applied" ? Date.now() : null),
+          approvedAt: shift.approvedAt || (shift.status !== "Applied" ? Date.now() : null),
+          checkedInTime: shift.checkedInTime || null,
+          checkedInAt: shift.checkedInAt || null,
+          checkedOutTime: shift.checkedOutTime || null,
+          finishedAt: shift.finishedAt || null,
+          ratingFromHospital: shift.ratingFromHospital || null,
+          evaluationComment: shift.evaluationComment || "",
+          grossPay: gross,
+          platformFee: gross * 0.15,
+          payoutAmount: Number(shift.payoutAmount) || (gross * 0.85),
+          paymentStatus: shift.paymentStatus || (shift.status === "Completed" ? "Paid" : ["Approved", "Active", "Awaiting Evaluation"].includes(shift.status) ? "Held" : "Not Started")
+        });
+        shift.assignedWorkerId = wId;
+      }
+
+      shift.applicants.forEach(app => {
+        const w = targetState.workers[app.workerId];
+        if (w) {
+          app.workerName = w.name;
+          app.workerInitials = w.initials;
+          app.reliabilityScore = w.reliabilityScore;
+          app.ratingScore = w.ratingScore;
+          app.licenseVerified = w.licenseVerified && !w.isSuspended;
+        }
+        if (!app.grossPay) app.grossPay = gross;
+        if (!app.platformFee) app.platformFee = gross * 0.15;
+        if (!app.payoutAmount) app.payoutAmount = gross * 0.85;
+      });
+    });
+  }
+  return targetState;
+}
+
+// Render Applicant Hub with multiple candidates
+function renderHospitalApplicantBoard() {
+  const container = document.getElementById("candidate-board-container");
+  const noApplicants = document.getElementById("no-applicants-state");
+  const badge = document.getElementById("applicants-count-badge");
+
+  const facilityShifts = getHealthcareFacilityShifts();
+  const applications = [];
+
+  facilityShifts.forEach(shift => {
+    (shift.applicants || []).forEach(applicant => {
+      applications.push({ shift, applicant });
+    });
+  });
+
+  const visibleApps = applications.filter(item =>
+    ["Applied", "Approved", "Active", "Awaiting Evaluation", "Completed"].includes(item.applicant.status) &&
+    item.applicant.status !== "Rejected" && item.applicant.status !== "Expired"
+  );
+
+  badge.textContent = `${visibleApps.length} applications`;
+
+  if (visibleApps.length === 0) {
+    noApplicants.style.display = "block";
+    container.querySelectorAll(".candidate-review-row").forEach(r => r.remove());
+    return;
+  }
+  noApplicants.style.display = "none";
+  container.querySelectorAll(".candidate-review-row").forEach(r => r.remove());
+
+  visibleApps.sort((a, b) => (b.applicant.appliedAt || 0) - (a.applicant.appliedAt || 0)).forEach(item => {
+    const { shift, applicant } = item;
+    let worker = state.workers[applicant.workerId];
+    if (!worker) {
+      worker = {
+        id: applicant.workerId,
+        name: applicant.name || applicant.workerName || "Healthcare Professional",
+        initials: applicant.initials || applicant.workerInitials || "HP",
+        phone: applicant.phone || "",
+        specialty: applicant.specialty || shift.positionNeeded,
+        experience: applicant.experience || shift.experienceRequired || 5,
+        licenseNumber: applicant.licenseNumber || "RN-948201-US",
+        licenseVerified: applicant.licenseVerified !== false,
+        reliabilityScore: applicant.reliabilityScore || 99.2,
+        ratingScore: applicant.ratingScore || 5.0,
+        walletBalance: 0
+      };
+      state.workers[applicant.workerId] = worker;
+    }
+
+    const workerName = worker.name || applicant.name || applicant.workerName || "Healthcare Professional";
+    const workerInitials = worker.initials || applicant.initials || applicant.workerInitials || "HP";
+    const workerPhone = worker.phone || applicant.phone || "";
+
+    const row = document.createElement("div");
+    row.className = "candidate-review-row";
+    row.id = `applicant-row-${shift.id}-${applicant.workerId}`;
+
+    const isPending = applicant.status === "Applied";
+    const stage = getApplicantStage(applicant.status);
+    const actionLabel = isPending ? "Review Credential Verification Status" : "View Flowchart Integrations";
+    const actionClass = isPending ? "btn-review-credentials" : "btn-view-flowchart";
+
+    const timingMarkup = isPending
+      ? `<div class="review-sla-timer">
+          <span class="review-sla-time-text" id="sla-text-${shift.id}-${applicant.workerId}">12:00:00</span>
+          <div class="review-sla-bar-outer">
+            <div class="review-sla-bar-inner" id="sla-bar-${shift.id}-${applicant.workerId}" style="width:100%;"></div>
+          </div>
+        </div>`
+      : `<div class="candidate-stage-badge ${stage.className}">${stage.label}</div>`;
+
+    row.innerHTML = `
+      <div class="candidate-profile-summary">
+        <div class="candidate-avatar">${escapeHtml(workerInitials)}</div>
+        <div class="candidate-name-info">
+          <button class="candidate-name-button" type="button" onclick="openApplicantDetails('${shift.id}', '${applicant.workerId}')">${escapeHtml(workerName)}</button>
+          <p>Reliability: <strong style="color:var(--color-mint);">${Number(worker.reliabilityScore || 99.0).toFixed(1)}%</strong> • ${worker.experience || 5} Yrs Exp • ${escapeHtml(workerPhone)}</p>
+          <p style="font-weight:600; color:var(--text-dark);">${escapeHtml(shift.positionNeeded)} • ${escapeHtml(shift.department)} ($${shift.hourlyWage.toFixed(2)}/hr)</p>
+        </div>
+      </div>
+      ${timingMarkup}
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span class="score-badge">★ ${Number(worker.ratingScore || 5.0).toFixed(1)} • 98.5% Fit</span>
+        <span style="font-size:0.65rem; color:var(--text-muted);">License: ${worker.licenseVerified && !worker.isSuspended ? "Verified" : "Review required"}</span>
+      </div>
+      <div class="review-actions-col">
+        <button class="${actionClass}" type="button" onclick="${isPending ? `openCredentialReview('${shift.id}', '${applicant.workerId}')` : `openFlowchartForApplicant('${shift.id}', '${applicant.workerId}')`}">${actionLabel}</button>
+      </div>
+    `;
+    container.appendChild(row);
+    if (isPending) startSLATicker(shift.id, applicant.workerId, applicant.slaExpiresAt);
+  });
+}
+
+function getApplicantStage(status) {
+  if (status === "Approved") return { label: "Approved • Shift scheduled", className: "" };
+  if (status === "Active") return { label: "Approved • Worker on site", className: "active" };
+  if (status === "Awaiting Evaluation") return { label: "Shift finished • Evaluation pending", className: "awaiting" };
+  if (status === "Completed") return { label: "Evaluated • Payment released", className: "paid" };
+  return { label: status, className: "" };
+}
+
+function openApplicantDetails(shiftId, workerId) {
+  const shift = state.shifts.find(s => s.id === shiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+  if (!applicant) return;
+  if (applicant.status === "Applied") openCredentialReview(shiftId, workerId);
+  else openFlowchartForApplicant(shiftId, workerId);
+}
+
+function openCredentialReview(shiftId, workerId) {
+  const shift = state.shifts.find(s => s.id === shiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+  let worker = state.workers[workerId];
+  if (!worker && applicant) {
+    worker = {
+      id: workerId,
+      name: applicant.name || applicant.workerName || "Healthcare Professional",
+      initials: applicant.initials || applicant.workerInitials || "HP",
+      phone: applicant.phone || "",
+      specialty: applicant.specialty || shift?.positionNeeded,
+      experience: applicant.experience || shift?.experienceRequired || 5,
+      licenseNumber: applicant.licenseNumber || "RN-948201-US",
+      licenseVerified: applicant.licenseVerified !== false,
+      reliabilityScore: applicant.reliabilityScore || 99.2,
+      ratingScore: applicant.ratingScore || 4.9,
+      walletBalance: 0
+    };
+    state.workers[workerId] = worker;
+  }
+  if (!shift || !applicant || !worker) return;
+
+  selectedShiftId = shiftId;
+  selectedWorkerId = workerId;
+
+  const workerName = worker.name || applicant.name || applicant.workerName || "Healthcare Professional";
+  const workerInitials = worker.initials || applicant.initials || applicant.workerInitials || "HP";
+
+  document.getElementById("credential-worker-avatar").textContent = workerInitials;
+  document.getElementById("credential-modal-title").textContent = workerName;
+  document.getElementById("credential-shift-summary").textContent = `${shift.positionNeeded} • ${shift.department} • ${shift.schedule}`;
+  document.getElementById("credential-reliability").textContent = `${Number(worker.reliabilityScore || 99.0).toFixed(1)}%`;
+  document.getElementById("credential-rating").textContent = `${Number(worker.ratingScore || 5.0).toFixed(1)} ★`;
+  document.getElementById("credential-experience").textContent = `${worker.experience || 5} years`;
+  document.getElementById("credential-license-number").textContent = worker.licenseNumber || "RN-948201-US";
+
+  const isClean = worker.licenseVerified && !worker.isSuspended;
+  document.getElementById("credential-approve-btn").disabled = !isClean;
+  document.getElementById("credential-approve-btn").onclick = () => approveCandidate(shiftId, workerId);
+  document.getElementById("credential-reject-btn").onclick = () => rejectCandidate(shiftId, workerId);
+
+  applicant.credentialReviewedAt = Date.now();
+  const modal = document.getElementById("credential-modal-screen");
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeCredentialReview() {
+  document.getElementById("credential-modal-screen").classList.remove("active");
+  selectedShiftId = null;
+  selectedWorkerId = null;
+}
+
+function approveCandidate(shiftId, workerId) {
+  const shift = state.shifts.find(s => s.id === shiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+  const worker = state.workers[workerId] || applicant;
+  if (!shift || !applicant) return;
+
+  const workerName = worker?.name || applicant.name || applicant.workerName || "Candidate";
+
+  applicant.status = "Approved";
+  applicant.approvedAt = Date.now();
+  applicant.paymentStatus = "Held";
+  shift.assignedWorkerId = workerId;
+  shift.status = "Approved";
+
+  closeCredentialReview();
+  addLog("matching", `APPROVED candidate ${workerName} for ${shift.department} shift. Worker phone notified.`);
+  addTimelineLine("erp", `[ERP] Budget reserved ($${(shift.hourlyWage * shift.durationHours).toFixed(2)}) for ${workerName}.`, "success");
+  addTimelineLine("reg", `[COMPLIANCE] Verified credentials for ${workerName} binding shift ${shift.id}.`, "success");
+
+  renderConnectedState();
+  showAlleviaToast(`${workerName} approved successfully for ${shift.department}.`);
+  notifyLocalChange("applicant_status_change", { shiftId, workerId, status: "Approved", applicantData: applicant });
+  queueCloudSync(0);
+}
+
+function rejectCandidate(shiftId, workerId) {
+  const shift = state.shifts.find(s => s.id === shiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+  const worker = state.workers[workerId] || applicant;
+  if (!shift || !applicant) return;
+
+  const workerName = worker?.name || applicant.name || applicant.workerName || "Candidate";
+
+  applicant.status = "Rejected";
+  applicant.decisionAt = Date.now();
+  if (shift.assignedWorkerId === workerId) {
+    shift.assignedWorkerId = null;
+    shift.status = "Open";
+  }
+
+  closeCredentialReview();
+  addLog("matching", `REJECTED application from ${workerName} for shift ${shift.id}.`);
+  renderConnectedState();
+  showAlleviaToast(`Application from ${workerName} rejected.`);
+  notifyLocalChange("applicant_status_change", { shiftId, workerId, status: "Rejected", applicantData: applicant });
+  queueCloudSync(0);
+}
+
+function startSLATicker(shiftId, workerId, expiresAt) {
+  const key = `${shiftId}-${workerId}`;
+  if (state.activeIntervals[key]) clearInterval(state.activeIntervals[key]);
+
+  const ticker = () => {
+    const shift = state.shifts.find(s => s.id === shiftId);
+    const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+    if (!applicant || applicant.status !== "Applied") {
+      clearInterval(state.activeIntervals[key]);
+      return;
+    }
+    const timeLeft = (expiresAt || applicant.slaExpiresAt || 0) - Date.now();
+    if (timeLeft <= 0) {
+      clearInterval(state.activeIntervals[key]);
+      applicant.status = "Expired";
+      addLog("sla", `⚠️ SLA Expired: 12-hour review window passed for candidate ${applicant.workerName}.`);
+      renderConnectedState();
+      return;
+    }
+    const totalSecs = Math.floor(timeLeft / 1000);
+    const hrs = Math.floor(totalSecs / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+    const secs = totalSecs % 60;
+    const txtNode = document.getElementById(`sla-text-${shiftId}-${workerId}`);
+    const barNode = document.getElementById(`sla-bar-${shiftId}-${workerId}`);
+    if (txtNode && barNode) {
+      txtNode.textContent = `${String(hrs).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+      const pct = (timeLeft / (12 * 3600 * 1000)) * 100;
+      barNode.style.width = `${pct}%`;
+      if (timeLeft < 3 * 3600 * 1000) {
+        barNode.classList.add("danger");
+        txtNode.classList.add("danger");
+      }
+    }
+  };
+  ticker();
+  state.activeIntervals[key] = setInterval(ticker, 1000);
+}
+
+// Supervisor Evaluation & Payment Release
+function renderHospitalEvaluationQueue() {
+  const container = document.getElementById("hospital-evaluation-queue");
+  const emptyState = document.getElementById("no-evaluations-state");
+  const pending = [];
+
+  getHealthcareFacilityShifts().forEach(shift => {
+    (shift.applicants || []).forEach(applicant => {
+      if (applicant.status === "Awaiting Evaluation") {
+        pending.push({ shift, applicant });
+      }
+    });
+  });
+
+  document.getElementById("evaluation-queue-count").textContent = `${pending.length} pending`;
+  container.querySelectorAll(".evaluation-queue-row").forEach(r => r.remove());
+
+  if (pending.length === 0) {
+    emptyState.style.display = "block";
+    return;
+  }
+  emptyState.style.display = "none";
+
+  pending.forEach(item => {
+    const { shift, applicant } = item;
+    const worker = state.workers[applicant.workerId] || applicant;
+    const row = document.createElement("div");
+    row.className = "evaluation-queue-row";
+    row.innerHTML = `
+      <div>
+        <h4>${escapeHtml(worker.name)} • ${escapeHtml(shift.department)}</h4>
+        <p>Checked out at ${escapeHtml(applicant.checkedOutTime || "just now")} • Payment held: $${(shift.hourlyWage * shift.durationHours).toFixed(2)} gross</p>
+      </div>
+      <button class="btn-evaluate-worker" type="button" onclick="openHospitalEvaluation('${shift.id}', '${applicant.workerId}')">Evaluate & Release Payment</button>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function openHospitalEvaluation(shiftId, workerId) {
+  const shift = state.shifts.find(s => s.id === shiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === workerId);
+  const worker = state.workers[workerId] || applicant;
+  if (!shift || !applicant) return;
+
+  selectedShiftId = shiftId;
+  selectedWorkerId = workerId;
+  setHospitalRating(5);
+  document.getElementById("rating-review-text").value = "";
+  document.getElementById("rating-modal-title").textContent = `Evaluate ${worker.name}`;
+  document.getElementById("rating-modal-subtitle").textContent = `${shift.department} • ${shift.durationHours} hours. Releases payout to ${worker.name}'s wallet.`;
+
+  document.getElementById("ratings-modal-screen").classList.add("active");
+}
+
+function closeHospitalEvaluation() {
+  document.getElementById("ratings-modal-screen").classList.remove("active");
+  selectedShiftId = null;
+  selectedWorkerId = null;
+}
+
+function setHospitalRating(value) {
+  currentRatingScore = Math.max(1, Math.min(5, Number(value) || 5));
+  document.querySelectorAll(".rating-stars .star").forEach(star => {
+    star.classList.toggle("active", Number(star.dataset.value) <= currentRatingScore);
+  });
+}
+
+function finalizeShiftSettlement() {
+  if (!selectedShiftId || !selectedWorkerId) return;
+  const shift = state.shifts.find(s => s.id === selectedShiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === selectedWorkerId);
+  if (!shift || !applicant) return;
+
+  if (!state.workers[selectedWorkerId]) {
+    state.workers[selectedWorkerId] = {
+      id: selectedWorkerId,
+      name: applicant.name || applicant.workerName || "Healthcare Professional",
+      initials: applicant.initials || applicant.workerInitials || "HP",
+      phone: applicant.phone || "",
+      specialty: applicant.specialty || shift.positionNeeded,
+      experience: applicant.experience || shift.experienceRequired || 5,
+      licenseNumber: applicant.licenseNumber || "RN-948201-US",
+      licenseVerified: applicant.licenseVerified !== false,
+      reliabilityScore: applicant.reliabilityScore || 99.2,
+      ratingScore: applicant.ratingScore || 5.0,
+      walletBalance: 0
+    };
+  }
+  const worker = state.workers[selectedWorkerId];
+
+  const grossPay = Math.round(shift.hourlyWage * shift.durationHours * 100) / 100;
+  const platformFee = Math.round(grossPay * 0.15 * 100) / 100;
+  const netEarnings = Math.round((grossPay - platformFee) * 100) / 100;
+
+  worker.ratingTotal = (worker.ratingTotal || 0) + currentRatingScore;
+  worker.ratingCount = (worker.ratingCount || 0) + 1;
+  worker.ratingScore = worker.ratingTotal / worker.ratingCount;
+  const relDelta = currentRatingScore >= 4 ? 0.3 : -0.6;
+  worker.reliabilityScore = Math.max(0, Math.min(100, (worker.reliabilityScore || 99.0) + relDelta));
+  worker.walletBalance = Math.round(((worker.walletBalance || 0) + netEarnings) * 100) / 100;
+
+  applicant.ratingFromHospital = currentRatingScore;
+  applicant.evaluationComment = document.getElementById("rating-review-text").value.trim();
+  applicant.evaluatedAt = Date.now();
+  applicant.paymentReleasedAt = Date.now();
+  applicant.status = "Completed";
+  applicant.paymentStatus = "Paid";
+  applicant.grossPay = grossPay;
+  applicant.platformFee = platformFee;
+  applicant.payoutAmount = netEarnings;
+  shift.status = "Completed";
+
+  state.billingLedger.settledPayouts += grossPay;
+  state.billingLedger.commissions += platformFee;
+  state.billingLedger.grossWages += netEarnings;
+
+  addLog("system", `Settled shift ${shift.id} for ${worker.name}: Disbursed $${netEarnings.toFixed(2)} net to wallet.`);
+  addTimelineLine("erp", `[ERP] Invoice settled for ${worker.name}. Cost Center debited $${grossPay.toFixed(2)}.`, "success");
+  addTimelineLine("reg", `[STRIPE] Escrow released: $${netEarnings.toFixed(2)} transferred to ${worker.name}.`, "success");
+
+  closeHospitalEvaluation();
+  renderConnectedState();
+  showAlleviaToast(`Evaluation submitted. $${netEarnings.toFixed(2)} disbursed to ${worker.name}.`);
+  notifyLocalChange("payment_disbursed", { workerId: selectedWorkerId, newBalance: worker.walletBalance, payoutAmount: netEarnings });
+  notifyLocalChange("applicant_status_change", { shiftId: shift.id, workerId: selectedWorkerId, status: "Completed", applicantData: applicant });
+  queueCloudSync(0);
+}
+
+// Live Shift Operations Table
+function updateHospitalMonitoringTable() {
+  const tbody = document.getElementById("hospital-monitoring-table-body");
+  const emptyRow = document.getElementById("empty-monitoring-row");
+  const activeEntries = [];
+
+  getHealthcareFacilityShifts().forEach(shift => {
+    (shift.applicants || []).forEach(applicant => {
+      if (["Approved", "Active", "Awaiting Evaluation", "Completed"].includes(applicant.status)) {
+        activeEntries.push({ shift, applicant });
+      }
+    });
+  });
+
+  tbody.querySelectorAll(".dynamic-monitoring-row").forEach(r => r.remove());
+
+  if (activeEntries.length === 0) {
+    emptyRow.style.display = "table-row";
+    document.getElementById("hospital-active-staff-count").textContent = "0";
+    return;
+  }
+  emptyRow.style.display = "none";
+
+  let onSiteCount = 0;
+  activeEntries.forEach(item => {
+    const { shift, applicant } = item;
+    const worker = state.workers[applicant.workerId] || applicant;
+    const tr = document.createElement("tr");
+    tr.className = "dynamic-monitoring-row";
+
+    let statusBadge = "";
+    if (applicant.status === "Approved") {
+      statusBadge = `<span class="badge-status status-pending">Scheduled</span>`;
+    } else if (applicant.status === "Active") {
+      statusBadge = `<span class="badge-status status-active">On Site</span>`;
+      onSiteCount++;
+    } else if (applicant.status === "Awaiting Evaluation") {
+      statusBadge = `<span class="badge-status status-pending">Evaluation Pending</span>`;
+    } else if (applicant.status === "Completed") {
+      statusBadge = `<span class="badge-status status-completed">Evaluated & Paid</span>`;
+    }
+
+    const reconc = applicant.paymentStatus === "Paid"
+      ? `Disbursed: $${Number(applicant.payoutAmount || 0).toFixed(2)}`
+      : applicant.status === "Awaiting Evaluation"
+        ? "Held for evaluation"
+        : `Est: $${(shift.hourlyWage * shift.durationHours).toFixed(2)}`;
+
+    tr.innerHTML = `
+      <td><button class="candidate-name-button" type="button" onclick="openApplicantDetails('${shift.id}', '${applicant.workerId}')">${escapeHtml(worker.name)}</button></td>
+      <td>${escapeHtml(shift.department)} <br><span style="font-size:0.65rem; color:var(--text-muted);">${escapeHtml(shift.positionNeeded)}</span></td>
+      <td>${statusBadge}</td>
+      <td style="font-family:monospace;">${escapeHtml(applicant.checkedInTime || "—")}</td>
+      <td style="font-family:monospace;">${escapeHtml(applicant.checkedOutTime || "—")}</td>
+      <td style="font-family:monospace; color:var(--color-mint); font-weight:700;">${reconc}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById("hospital-active-staff-count").textContent = String(onSiteCount);
+  document.getElementById("hospital-registered-workers-count").textContent = String(Object.keys(state.workers).length);
+}
+
+function updateFinancialLedgers() {
+  let estimated = 0.00;
+  let gross = 0.00;
+  let commission = 0.00;
+  let settled = 0.00;
+
+  getHealthcareFacilityShifts().forEach(shift => {
+    (shift.applicants || []).forEach(applicant => {
+      const g = shift.hourlyWage * shift.durationHours;
+      if (["Applied", "Approved", "Active", "Awaiting Evaluation"].includes(applicant.status)) {
+        estimated += g;
+      } else if (applicant.status === "Completed") {
+        gross += g * 0.85;
+        commission += g * 0.15;
+        settled += g;
+      }
+    });
+  });
+
+  document.getElementById("ledger-est-cost").textContent = `$${estimated.toFixed(2)}`;
+  document.getElementById("ledger-commission-cost").textContent = `$${commission.toFixed(2)}`;
+  document.getElementById("ledger-worker-gross").textContent = `$${gross.toFixed(2)}`;
+  document.getElementById("ledger-settled-cost").textContent = `$${settled.toFixed(2)}`;
+}
+
+function openFlowchartForApplicant(shiftId, workerId) {
+  selectedShiftId = shiftId;
+  selectedWorkerId = workerId;
+  renderFlowchart();
+}
+
+function renderFlowchart() {
+  const shift = state.shifts.find(s => s.id === selectedShiftId);
+  const applicant = (shift?.applicants || []).find(a => a.workerId === selectedWorkerId);
+  const worker = state.workers[selectedWorkerId];
+  const context = document.getElementById("flowchart-worker-context");
+  const bankStatus = document.getElementById("bank-gateway-status");
+  const erpStatus = document.getElementById("erp-sync-status");
+  const nodeEscrow = document.getElementById("node-escrow");
+  const nodeStripe = document.getElementById("node-stripe");
+  const nodeDisburse = document.getElementById("node-disburse");
+
+  [nodeEscrow, nodeStripe, nodeDisburse].forEach(n => n.className = "bank-node");
+
+  if (!shift || !applicant || !worker) {
+    context.textContent = "Select an approved worker or shift to inspect the connected workflow.";
+    bankStatus.textContent = "IDLE / ESCROW UNLOCKED";
+    erpStatus.textContent = "IDLE (NO ACTIVE SHIFT)";
+    return;
+  }
+
+  context.textContent = `${worker.name} • ${shift.positionNeeded} (${shift.department}) • Status: ${applicant.status}`;
+  nodeEscrow.classList.add("active");
+
+  if (["Active", "Awaiting Evaluation", "Completed"].includes(applicant.status)) {
+    nodeStripe.classList.add("active");
+  }
+  if (applicant.paymentStatus === "Paid") {
+    nodeDisburse.classList.add("active");
+    bankStatus.textContent = `DISBURSED $${Number(applicant.payoutAmount || 0).toFixed(2)} TO ${worker.name.toUpperCase()}'S WALLET`;
+    bankStatus.style.color = "var(--color-mint)";
+    erpStatus.textContent = "BALANCED & SETTLED";
+    erpStatus.style.color = "var(--color-mint)";
+  } else if (applicant.status === "Awaiting Evaluation") {
+    bankStatus.textContent = `ESCROW HELD ($${(shift.hourlyWage * shift.durationHours).toFixed(2)}) AWAITING EVALUATION`;
+    bankStatus.style.color = "var(--color-amber)";
+    erpStatus.textContent = "TIMESHEET LOGGED / PENDING REVIEW";
+  } else if (applicant.status === "Active") {
+    bankStatus.textContent = "FUNDS LOCKED IN STRIPE TRANSIT";
+    bankStatus.style.color = "var(--color-violet)";
+    erpStatus.textContent = "ON SITE / ACCRUING LABOR";
+  } else {
+    bankStatus.textContent = `ESCROW LOCKED: $${(shift.hourlyWage * shift.durationHours).toFixed(2)}`;
+    bankStatus.style.color = "var(--color-violet)";
+    erpStatus.textContent = `SHIFT RESERVED (${shift.id})`;
+  }
+}
+
+function publishShiftFromAdmin() {
+  if (!currentHealthcareFacility) return;
+  const dept = document.getElementById("req-dept").value;
+  const role = document.getElementById("req-position").value;
+  const exp = parseInt(document.getElementById("req-experience").value);
+  const wage = parseFloat(document.getElementById("req-wage").value);
+  const schedule = document.getElementById("req-schedule").value;
+  const gender = document.getElementById("req-gender").value;
+
+  const newShift = {
+    id: `sh-fac-${Date.now().toString().slice(-5)}`,
+    facilityCode: currentHealthcareFacility.code,
+    hospitalName: currentHealthcareFacility.name,
+    department: dept,
+    positionNeeded: role,
+    experienceRequired: exp,
+    hourlyWage: wage,
+    genderPreference: gender,
+    schedule: schedule,
+    durationHours: 8,
+    status: "Open",
+    assignedWorkerId: null,
+    applicants: [],
+    distanceMeters: 45
+  };
+
+  state.shifts.push(newShift);
+  addLog("matching", `POSTED NEW SHIFT: ${dept} needs ${role} ($${wage.toFixed(2)}/hr). Visible to all Worker apps.`);
+  renderConnectedState();
+  showAlleviaToast(`Shift published to marketplace for all workers!`);
+  queueCloudSync(0);
+}
+
+function handleSeasonalityChange(seasonLevel) {
+  state.currentSeasonality = seasonLevel;
+  const barPeds = document.getElementById("bar-peds");
+  const barER = document.getElementById("bar-er");
+  const barICU = document.getElementById("bar-icu");
+  const indicator = document.getElementById("shortage-forecast-indicator");
+
+  if (seasonLevel === 1) {
+    barPeds.style.height = "45%"; barER.style.height = "30%"; barICU.style.height = "15%";
+    indicator.textContent = "Normal Demand"; indicator.className = "badge-pending";
+  } else if (seasonLevel === 2) {
+    barPeds.style.height = "70%"; barER.style.height = "55%"; barICU.style.height = "40%";
+    indicator.textContent = "High Demand Alert"; indicator.className = "badge-pending";
+    addLog("system", "Dynamic Forecast: High demand predicted across clinical wards.");
+  } else {
+    barPeds.style.height = "92%"; barER.style.height = "80%"; barICU.style.height = "65%";
+    indicator.textContent = "⚠️ Critical Deficit"; indicator.className = "badge-pending";
+    addLog("incident", "CRITICAL DEFICIT: Urgent temporary staffing required.");
+  }
+  queueCloudSync(200);
+}
+
+// Policies Incident Simulators
+function toggleLateArrivalPenalty() {
+  const worker = state.workers[selectedWorkerId] || Object.values(state.workers)[0];
+  if (!worker) return;
+  worker.reliabilityScore = Math.max(0, (worker.reliabilityScore || 99.0) - 5.0);
+  addLog("incident", `Late arrival recorded for ${worker.name}. Reliability score: ${worker.reliabilityScore.toFixed(1)}%`);
+  addTimelineLine("reg", `[PENALTY] Late arrival penalty (-5.0%) for ${worker.name}.`, "danger");
+  renderConnectedState();
+  queueCloudSync(0);
+}
+
+function toggleCancellationPenalty() {
+  const worker = state.workers[selectedWorkerId] || Object.values(state.workers)[0];
+  if (!worker) return;
+  worker.ratingScore = Math.max(1, (worker.ratingScore || 5.0) - 0.2);
+  addLog("incident", `Cancellation penalty for ${worker.name}: -0.2 star rating.`);
+  addTimelineLine("reg", `[PENALTY] Shift cancelled under 24h by ${worker.name}.`, "warning");
+  renderConnectedState();
+  queueCloudSync(0);
+}
+
+function toggleNoShowIncident() {
+  const worker = state.workers[selectedWorkerId] || Object.values(state.workers)[0];
+  if (!worker) return;
+  worker.isSuspended = !worker.isSuspended;
+  worker.licenseVerified = !worker.isSuspended;
+  addLog("incident", `Compliance alert: ${worker.name} status is now ${worker.isSuspended ? "SUSPENDED" : "RESTORED"}.`);
+  renderConnectedState();
+  queueCloudSync(0);
+}
+
+function addLog(tag, message) {
+  const terminal = document.getElementById("terminal-logs-container");
+  if (!terminal) return;
+  const now = new Date();
+  const timeStr = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+  const line = document.createElement("div");
+  line.className = "log-line";
+  line.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="log-tag ${tag}">[${tag.toUpperCase()}]</span> <span class="log-msg">${message}</span>`;
+  terminal.appendChild(line);
+  terminal.scrollTop = terminal.scrollHeight;
+}
+
+function addTimelineLine(terminalId, message, type = "") {
+  const terminal = document.getElementById(`${terminalId}-audit-terminal`);
+  if (!terminal) return;
+  const line = document.createElement("div");
+  line.className = `timeline-line ${type}`;
+  line.textContent = message;
+  terminal.prepend(line);
+}
+
+function showAlleviaToast(message) {
+  const toast = document.getElementById("allevia-toast");
+  if (!toast) return;
+  toast.textContent = message;
+  toast.classList.add("active");
+  setTimeout(() => toast.classList.remove("active"), 4500);
+}
+
+function renderConnectedState() {
+  normalizeStateShape(state);
+  renderHospitalApplicantBoard();
+  renderHospitalEvaluationQueue();
+  updateHospitalMonitoringTable();
+  updateFinancialLedgers();
+  renderFlowchart();
+}
+
+// Local Real-time Multi-Tab / Multi-Window Synchronization
+const SYNC_CHANNEL_NAME = "allevia_hospital_worker_sync_v4";
+const syncBroadcast = typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(SYNC_CHANNEL_NAME) : null;
+
+function notifyLocalChange(type, payload) {
+  const msg = { type, payload, timestamp: Date.now() };
+  if (syncBroadcast) {
+    try { syncBroadcast.postMessage(msg); } catch (e) {}
+  }
+  try {
+    localStorage.setItem("allevia_local_sync_event", JSON.stringify(msg));
+  } catch (e) {}
+}
+
+function handleIncomingSync(data) {
+  if (!data || !data.type) return;
+  if (data.type === "applicant_applied" && data.payload) {
+    const { shiftId, applicant, worker } = data.payload;
+    if (worker && worker.id) state.workers[worker.id] = worker;
+    const shift = state.shifts.find(s => s.id === shiftId);
+    if (shift) {
+      if (!Array.isArray(shift.applicants)) shift.applicants = [];
+      const idx = shift.applicants.findIndex(a => a.workerId === applicant.workerId);
+      if (idx >= 0) shift.applicants[idx] = applicant;
+      else shift.applicants.push(applicant);
+      if (shift.status === "Open") shift.status = "Applied";
+    }
+    const applicantName = applicant.name || applicant.workerName || "Healthcare Professional";
+    addLog("matching", `New application received: ${applicantName} applied for ${shift?.department || "shift"}!`);
+    showAlleviaToast(`New applicant: ${applicantName}`);
+    renderConnectedState();
+  } else if (data.type === "applicant_status_change" && data.payload) {
+    const { shiftId, workerId, status, applicantData } = data.payload;
+    const shift = state.shifts.find(s => s.id === shiftId);
+    if (shift) {
+      const app = (shift.applicants || []).find(a => a.workerId === workerId);
+      if (app) {
+        app.status = status;
+        if (applicantData) Object.assign(app, applicantData);
+        const applicantName = app.name || app.workerName || "Worker";
+        if (status === "Active") {
+          showAlleviaToast(`${applicantName} checked in On Site!`);
+          addLog("monitoring", `${applicantName} checked in on site for ${shift.department}.`);
+        } else if (status === "Awaiting Evaluation") {
+          showAlleviaToast(`${applicantName} finished shift. Ready for evaluation.`);
+          addLog("monitoring", `${applicantName} finished shift at ${shift.department}. Awaiting evaluation.`);
+        }
+      }
+    }
+    renderConnectedState();
+  } else if (data.type === "worker_registered" && data.payload) {
+    const { worker } = data.payload;
+    if (worker && worker.id) {
+      state.workers[worker.id] = worker;
+      addLog("system", `Worker registered: ${worker.name}`);
+      renderConnectedState();
+    }
+  } else if (data.type === "demo_cleared") {
+    state.shifts.forEach(s => {
+      s.status = "Open";
+      s.assignedWorkerId = null;
+      s.applicants = [];
+    });
+    renderConnectedState();
+  }
+}
+
+if (syncBroadcast) {
+  syncBroadcast.onmessage = (event) => handleIncomingSync(event.data);
+}
+window.addEventListener("storage", (event) => {
+  if (event.key === "allevia_local_sync_event" && event.newValue) {
+    try {
+      handleIncomingSync(JSON.parse(event.newValue));
+    } catch (e) {}
+  }
+});
+
+// Cloud Synchronization
+const cloudSyncRuntime = {
+  started: false,
+  loading: false,
+  saving: false,
+  version: 0,
+  pollTimer: null,
+  saveTimer: null
+};
+
+function getApiUrl(path) {
+  const configuredOrigin = (document.documentElement.getAttribute("data-api-origin") || "").replace(/\/$/, "");
+  if (configuredOrigin) return configuredOrigin + path;
+  if (location.protocol === "http:" || location.protocol === "https:") {
+    return new URL(path, location.origin).toString();
+  }
+  return null;
+}
+
+function setCloudStatus(text, mode) {
+  const status = document.getElementById("cloud-state");
+  const label = document.getElementById("cloud-state-text");
+  if (!status || !label) return;
+  status.classList.remove("offline", "error");
+  if (mode) status.classList.add(mode);
+  label.textContent = text;
+}
+
+async function loadCloudState() {
+  if (!cloudSyncRuntime.started || cloudSyncRuntime.loading || cloudSyncRuntime.saving) return;
+  const url = getApiUrl("/api/state");
+  if (!url) return;
+
+  cloudSyncRuntime.loading = true;
+  try {
+    const res = await fetch(url, { method: "GET", headers: { "accept": "application/json" }, cache: "no-store", mode: "cors" });
+    if (!res.ok) throw new Error("Sync load failed");
+    const payload = await res.json();
+    if (payload.state && (payload.version > cloudSyncRuntime.version || !cloudSyncRuntime.version)) {
+      mergeStateFromRemote(payload.state);
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      renderConnectedState();
+    }
+    setCloudStatus("Live sync on", "");
+  } catch (err) {
+    setCloudStatus("Sync offline", "offline");
+  } finally {
+    cloudSyncRuntime.loading = false;
+  }
+}
+
+function mergeStateFromRemote(remoteState) {
+  if (!remoteState) return;
+  normalizeStateShape(remoteState);
+  normalizeStateShape(state);
+
+  // Merge workers
+  for (const wId in remoteState.workers) {
+    if (!state.workers[wId]) {
+      state.workers[wId] = remoteState.workers[wId];
+      addLog("system", `New worker registered on network: ${remoteState.workers[wId].name}`);
+    } else {
+      // Keep worker info updated
+      Object.assign(state.workers[wId], remoteState.workers[wId]);
+    }
+  }
+
+  // Merge shifts and applicants
+  if (Array.isArray(remoteState.shifts)) {
+    remoteState.shifts.forEach(remoteShift => {
+      let localShift = state.shifts.find(s => s.id === remoteShift.id);
+      if (!localShift) {
+        state.shifts.push(remoteShift);
+        return;
+      }
+      localShift.status = remoteShift.status;
+      localShift.assignedWorkerId = remoteShift.assignedWorkerId;
+
+      if (!Array.isArray(localShift.applicants)) localShift.applicants = [];
+      if (Array.isArray(remoteShift.applicants)) {
+        remoteShift.applicants.forEach(remoteApp => {
+          let localApp = localShift.applicants.find(a => a.workerId === remoteApp.workerId);
+          if (!localApp) {
+            localShift.applicants.push(remoteApp);
+            const wName = remoteApp.name || remoteApp.workerName || "Applicant";
+            addLog("matching", `New application received: ${wName} applied for ${localShift.department}!`);
+            showAlleviaToast(`New applicant: ${wName} for ${localShift.department}`);
+          } else {
+            // Check status transition
+            if (localApp.status !== remoteApp.status) {
+              const wName = remoteApp.name || remoteApp.workerName || "Applicant";
+              if (remoteApp.status === "Active") {
+                showAlleviaToast(`${wName} checked in On Site!`);
+              } else if (remoteApp.status === "Awaiting Evaluation") {
+                showAlleviaToast(`${wName} finished shift. Ready for evaluation.`);
+              }
+            }
+            Object.assign(localApp, remoteApp);
+          }
+        });
+      }
+    });
+  }
+  state.billingLedger = remoteState.billingLedger || state.billingLedger;
+}
+
+async function saveCloudState() {
+  if (!cloudSyncRuntime.started || cloudSyncRuntime.saving) return;
+  const url = getApiUrl("/api/state");
+  if (!url) return;
+
+  cloudSyncRuntime.saving = true;
+  setCloudStatus("Saving…", "");
+  try {
+    normalizeStateShape(state);
+    const workerProfile = Object.values(state.workers)[0] || {
+      id: "wk_emma",
+      name: "Emma Vance, RN",
+      specialty: "Pediatric Nurse",
+      experience: 5
+    };
+
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json", "accept": "application/json" },
+      cache: "no-store",
+      mode: "cors",
+      body: JSON.stringify({
+        baseVersion: cloudSyncRuntime.version,
+        state: {
+          dataVersion: 4,
+          workerProfile: workerProfile,
+          workers: state.workers,
+          shifts: state.shifts,
+          billingLedger: state.billingLedger,
+          currentSeasonality: state.currentSeasonality
+        }
+      })
+    });
+    const payload = await res.json();
+    if (res.status === 409 && payload.state) {
+      mergeStateFromRemote(payload.state);
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      renderConnectedState();
+      cloudSyncRuntime.saving = false;
+      queueCloudSync(100);
+      return;
+    }
+    if (res.ok) {
+      cloudSyncRuntime.version = payload.version || cloudSyncRuntime.version;
+      setCloudStatus("Live sync on", "");
+    } else {
+      console.warn("Save cloud state returned non-ok status:", res.status, payload);
+      setCloudStatus("Sync failed", "error");
+    }
+  } catch (err) {
+    console.error("Save cloud state error:", err);
+    setCloudStatus("Sync failed", "error");
+  } finally {
+    cloudSyncRuntime.saving = false;
+  }
+}
+
+function queueCloudSync(delay = 150) {
+  clearTimeout(cloudSyncRuntime.saveTimer);
+  cloudSyncRuntime.saveTimer = setTimeout(saveCloudState, delay);
+}
+
+function startCloudSync() {
+  cloudSyncRuntime.started = true;
+  loadCloudState();
+  clearInterval(cloudSyncRuntime.pollTimer);
+  cloudSyncRuntime.pollTimer = setInterval(loadCloudState, 1500);
+}
+
+// Lifecycle Initialization
+document.addEventListener("DOMContentLoaded", () => {
+  normalizeStateShape(state);
+
+  document.getElementById("healthcare-login-form").addEventListener("submit", e => {
+    e.preventDefault();
+    const code = document.getElementById("healthcare-code").value.trim();
+    const facility = healthcareFacilities[code];
+    if (!facility) {
+      document.getElementById("healthcare-code-error").style.display = "block";
+      return;
+    }
+    document.getElementById("healthcare-code-error").style.display = "none";
+    currentHealthcareFacility = facility;
+    document.body.dataset.role = "hospital";
+    document.getElementById("healthcare-facility-name").textContent = facility.name;
+    document.getElementById("healthcare-facility-type").textContent = `${facility.type} Admin Console • Code ${facility.code}`;
+    renderConnectedState();
+    startCloudSync();
+  });
+
+  document.getElementById("logout-role").addEventListener("click", () => {
+    delete document.body.dataset.role;
+    document.getElementById("healthcare-code").value = "";
+    clearInterval(cloudSyncRuntime.pollTimer);
+  });
+
+  document.getElementById("btn-publish-shift").addEventListener("click", publishShiftFromAdmin);
+  document.getElementById("forecast-slider").addEventListener("input", e => handleSeasonalityChange(parseInt(e.target.value)));
+
+  document.getElementById("btn-close-credential").addEventListener("click", closeCredentialReview);
+  document.getElementById("btn-close-rating").addEventListener("click", closeHospitalEvaluation);
+
+  document.querySelectorAll(".rating-stars .star").forEach(star => {
+    star.addEventListener("click", () => setHospitalRating(star.dataset.value));
+  });
+  document.getElementById("btn-submit-rating").addEventListener("click", finalizeShiftSettlement);
+
+  document.getElementById("btn-trigger-late-arrival").addEventListener("click", toggleLateArrivalPenalty);
+  document.getElementById("btn-trigger-cancellation").addEventListener("click", toggleCancellationPenalty);
+  document.getElementById("btn-trigger-noshow").addEventListener("click", toggleNoShowIncident);
+
+  document.getElementById("btn-clear-terminal").addEventListener("click", () => {
+    document.getElementById("terminal-logs-container").innerHTML = "";
+  });
+
+  document.getElementById("clear-demo-data").addEventListener("click", () => {
+    if (!confirm("Clear all application history and reset shifts?")) return;
+    state.shifts.forEach(s => {
+      s.status = "Open";
+      s.assignedWorkerId = null;
+      s.applicants = [];
+    });
+    renderConnectedState();
+    notifyLocalChange("demo_cleared", {});
+    queueCloudSync(0);
+    showAlleviaToast("Demo applications cleared.");
+  });
+
+  // Automatically sign in to default facility for instant usability
+  document.body.dataset.role = "hospital";
+  renderConnectedState();
+  startCloudSync();
+});
+  </script>
+</body>
+</html>
